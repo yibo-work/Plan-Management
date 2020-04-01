@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.classroom.mapper.CourseMapper">
+
+    <!--查询所有map-->
+    <resultMap id="CourseVOMap" type="CourseVO">
+        <id column="id" property="courseId"/>
+        <association property="course" javaType="course">
+            <id column="id" property="id"/>
+            <result property="name" column="courseName"/>
+            <result property="userId" column="user_id"/>
+            <result property="classroomId" column="classroom_id"/>
+            <result property="beginTime" column="begin_time"/>
+            <result property="endTime" column="end_time"/>
+        </association>
+        <association property="user" javaType="User">
+            <id column="id" property="id"/>
+            <result property="userNo" column="user_no"/>
+            <result property="name" column="username"/>
+            <result property="password" column="password"/>
+            <result property="role" column="role"/>
+        </association>
+        <association property="classroom" javaType="Classroom">
+            <id column="id" property="id"/>
+            <result property="name" column="classroomName"/>
+            <result property="type" column="type"/>
+        </association>
+    </resultMap>
+
+    <!--查询课程-->
+    <select id="queryCourseList" resultMap="CourseVOMap">
+        Select *, a.id as courseId, a.name as courseName, s.name as username, d.name as classroomName from course as a inner join `user` as s on a.user_id =
+        s.id
+        inner join
+        `classroom` as d ON a.classroom_id = d.id
+        <where>
+            <if test="name != null">
+                and a.name like '%${name}%' OR s.name like '%${name}%' OR d.name like '%${name}%'
+            </if>
+        </where>
+        order by a.id desc
+    </select>
+
+    <!--新增课程-->
+    <insert id="addCourse">
+        insert into course(name, user_id, classroom_id, begin_time, end_time)
+        values (#{course.name}, #{course.userId}, #{course.classroomId}, #{course.beginTime}, #{course.endTime});
+    </insert>
+
+    <!--查询单个课程-->
+    <select id="getCourseById" resultType="Course" useCache="true">
+        Select *
+        from course
+        where id = #{id};
+    </select>
+
+    <!--修改课程-->
+    <update id="updateCourse">
+        update course
+        set name        = #{course.name},
+            user_id=#{course.userId},
+            classroom_id=#{course.classroomId},
+            begin_time  = #{course.beginTime},
+            end_time=#{course.endTime}
+        where id = #{course.id}
+    </update>
+
+    <!--删除课程-->
+    <delete id="removeCourseById">
+        delete
+        from course
+        where id = #{id}
+        <!--where id IN (<foreach collection="idList" item="id" separator=",">#{id}</foreach>)-->
+    </delete>
+
+    <!--查询申请时是否有在这个时间段这个教室有课程-->
+    <select id="getCourseByClassroomAndTime" resultType="Course" useCache="false">
+        Select *
+        from course
+        where classroom_id = #{classroomId}
+          and ((begin_time &gt;= #{beginTime} and begin_time &lt; #{endTime}) OR (end_time &gt; #{beginTime} and end_time &lt;= #{endTime})
+            OR (begin_time &lt;=
+                #{beginTime} and
+                end_time
+                    &gt;= #{endTime}))
+    </select>
+
+    <!--查询空闲时间段这个教室有课程-->
+    <select id="getCourseByBeginTimeAndEndTime" resultType="Course" useCache="false">
+        Select *
+        from course
+        where classroom_id = #{classroomId}
+          and ((#{beginTime} &gt;= begin_time and #{beginTime} &lt; end_time) OR (#{endTime} &gt; begin_time and #{endTime} &lt;= end_time));
+    </select>
+</mapper>

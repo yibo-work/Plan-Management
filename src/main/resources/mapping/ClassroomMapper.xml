@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.classroom.mapper.ClassroomMapper">
+
+    <!--查询教室-->
+    <select id="queryClassroomList" resultType="Classroom">
+        Select id, name, type
+        from classroom
+        <where>
+            <if test="name != null">
+                and name like '%${name}%'
+            </if>
+            <if test="type != null">
+                and type = #{type}
+            </if>
+        </where>
+        order by id desc
+    </select>
+
+    <resultMap id="ClassroomVOApplyMap" type="ClassroomApplyVO">
+        <id column="classroomId" property="classroomId"/>
+        <association property="classroom" javaType="Classroom">
+            <id column="id" property="id"/>
+            <result property="name" column="classroomName"/>
+            <result property="type" column="type"/>
+        </association>
+        <collection property="applyList" column="classroomId" ofType="Apply" select="getClassroomApplyById"/>
+    </resultMap>
+
+
+    <resultMap id="ClassroomVOCourseMap" type="ClassroomCourseVO">
+        <id column="classroomId" property="classroomId"/>
+        <association property="classroom" javaType="Classroom">
+            <id column="id" property="id"/>
+            <result property="name" column="classroomName"/>
+            <result property="type" column="type"/>
+        </association>
+        <collection property="courseList" column="classroomId" ofType="course" select="getClassroomCourseById"/>
+    </resultMap>
+
+    <select id="getClassroomCourseById" resultType="course">
+        Select *
+        from course
+        where classroom_id = #{0};
+    </select>
+
+    <select id="getClassroomApplyById" resultType="apply">
+        Select *
+        from apply
+        where classroom_id = #{0}
+          and show_status &lt;&gt; 1;
+    </select>
+
+    <select id="queryClassroomTimeListByIdApply" resultMap="ClassroomVOApplyMap">
+        Select *,
+               a.id         as classroomId,
+               a.name       as classroomName,
+               s.begin_time as apply_begin_time,
+               s.end_time   as apply_end_time
+        from classroom as a
+                 inner join apply as s on a.id = s.classroom_id
+        where a.id = #{id}
+          and s.show_status &lt;&gt; 1
+    </select>
+
+    <select id="queryClassroomTimeListByIdCourse" resultMap="ClassroomVOCourseMap">
+        Select *,
+               a.id         as classroomId,
+               a.name       as classroomName,
+               d.begin_time as course_begin_time,
+               d.end_time   as course_end_time
+        from classroom as a
+                 inner join course as d on a.id = d.classroom_id
+        where a.id = #{id}
+    </select>
+
+    <!--新增教室-->
+    <insert id="addClassroom">
+        insert into classroom(name, type)
+        values (#{classroom.name}, #{classroom.type});
+    </insert>
+
+    <!--查询所有教室-->
+    <select id="getAllClassroom" resultType="Classroom">
+        Select *
+        from classroom
+    </select>
+
+    <!--查询单个教室-->
+    <select id="getClassroomById" resultType="Classroom">
+        Select *
+        from classroom
+        where id = #{id};
+    </select>
+
+    <!--修改教室-->
+    <update id="updateClassroom">
+        update classroom
+        set name = #{classroom.name},
+            type=#{classroom.type}
+        where id = #{classroom.id}
+    </update>
+
+    <!--删除教室-->
+    <delete id="removeClassroomById">
+        delete
+        from classroom
+        where id = #{id}
+    </delete>
+</mapper>

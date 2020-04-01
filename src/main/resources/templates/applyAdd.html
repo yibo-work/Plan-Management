@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html class="x-admin-sm" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>欢迎页面-X-admin2.2</title>
+    <meta content="webkit" name="renderer">
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8" name="viewport"/>
+    <link rel="stylesheet" th:href="@{/css/xadmin.css}">
+    <link rel="stylesheet" th:href="@{/css/font.css}">
+    <script charset="utf-8" th:src="@{/js/jquery.min.js}" type="text/javascript"></script>
+    <script charset="utf-8" th:src="@{/layui/layui.js}" type="text/javascript"></script>
+    <script charset="utf-8" th:src="@{/js/xadmin.js}" type="text/javascript"></script>
+    <script charset="utf-8" th:src="@{/js/vue.js}" type="text/javascript"></script>
+</head>
+<body>
+<div class="layui-fluid">
+    <div class="layui-row">
+        <form class="layui-form">
+            <div class="layui-form-item">
+                <label class="layui-form-label" for="applyDate">
+                    <span class="x-red">*</span>借用日期
+                </label>
+                <div class="layui-input-block">
+                    <div class="layui-input-inline layui-show-xs-block">
+                        <input autocomplete="off" class="layui-input" id="applyDate" lay-verify="required" name="applyDate" type="text">
+                    </div>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label" for="beginHour">
+                    <span class="x-red">*</span>借用时间
+                </label>
+                <div class="layui-input-block">
+                    <div class="layui-input-inline layui-show-xs-block" style="width: 90px">
+                        <select id="beginHour" name="beginHour">
+                            <option value="00:00:00">深夜0点</option>
+                            <option value="01:00:00">深夜1点</option>
+                            <option value="02:00:00">深夜2点</option>
+                            <option value="03:00:00">深夜3点</option>
+                            <option value="04:00:00">深夜4点</option>
+                            <option value="05:00:00">凌晨5点</option>
+                            <option value="06:00:00">早上6点</option>
+                            <option value="07:00:00">早上7点</option>
+                            <option value="08:00:00">上午8点</option>
+                            <option value="09:00:00">上午9点</option>
+                            <option value="10:00:00">上午10点</option>
+                            <option value="11:00:00">上午11点</option>
+                            <option value="12:00:00">中午12点</option>
+                            <option value="13:00:00">中午1点</option>
+                            <option value="14:00:00">下午2点</option>
+                            <option value="15:00:00">下午3点</option>
+                            <option value="16:00:00">下午4点</option>
+                            <option value="17:00:00">下午5点</option>
+                            <option value="18:00:00">傍晚6点</option>
+                            <option value="19:00:00">晚上7点</option>
+                            <option value="20:00:00">晚上8点</option>
+                            <option value="21:00:00">晚上9点</option>
+                            <option value="22:00:00">晚上10点</option>
+                            <option value="23:00:00">晚上11点</option>
+                            <option value="24:00:00">深夜12点</option>
+                        </select>
+                    </div>
+                    <div class="layui-input-inline" style="width: 90px">
+                        <select id="endHour" name="endHour">
+                            <option value="00:00:00">深夜0点</option>
+                            <option value="01:00:00">深夜1点</option>
+                            <option value="02:00:00">深夜2点</option>
+                            <option value="03:00:00">深夜3点</option>
+                            <option value="04:00:00">深夜4点</option>
+                            <option value="05:00:00">凌晨5点</option>
+                            <option value="06:00:00">早上6点</option>
+                            <option value="07:00:00">早上7点</option>
+                            <option value="08:00:00">上午8点</option>
+                            <option value="09:00:00">上午9点</option>
+                            <option value="10:00:00">上午10点</option>
+                            <option value="11:00:00">上午11点</option>
+                            <option value="12:00:00">中午12点</option>
+                            <option value="13:00:00">中午1点</option>
+                            <option value="14:00:00">下午2点</option>
+                            <option value="15:00:00">下午3点</option>
+                            <option value="16:00:00">下午4点</option>
+                            <option value="17:00:00">下午5点</option>
+                            <option value="18:00:00">傍晚6点</option>
+                            <option value="19:00:00">晚上7点</option>
+                            <option value="20:00:00">晚上8点</option>
+                            <option value="21:00:00">晚上9点</option>
+                            <option value="22:00:00">晚上10点</option>
+                            <option value="23:00:00">晚上11点</option>
+                            <option value="24:00:00">深夜12点</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label" for="applyReason">
+                    <span class="x-red">*</span>申请理由
+                </label>
+                <div class="layui-input-block">
+                    <div class="layui-input-inline layui-show-xs-block">
+                        <input class="layui-input" id="applyReason" lay-verify="required" name="reason" type="text">
+                    </div>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label" for="endHour"></label>
+                <button class="layui-btn" lay-filter="add" lay-submit="">
+                    提交申请
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+<script type="text/javascript">
+
+    var boolSubmit = false;
+    //申请的日期
+    var applyClassroomDay;
+
+    layui.use(['form', 'layer', 'laydate'],
+        function () {
+            var form = layui.form,
+                layer = layui.layer,
+                laydate = layui.laydate;
+
+            //监听提交
+            form.on('submit(add)',
+                function (data) {
+
+                    var starts = new Date(nowDate + " " + data.field.beginHour), ends = new Date(nowDate + " " + data.field.endHour);
+                    var hours = (ends.getTime() - starts.getTime()) / (1000 * 60 * 60);
+                    hours = isNaN(hours) ? 0 : hours;
+                    if (hours > 2) {
+                        layer.msg("时间超过2小时", {icon: 5});
+                        boolSubmit = false;
+                    } else if (hours < 0) {
+                        layer.msg("请选择正确的上课时间！", {icon: 5});
+                        boolSubmit = false;
+                    } else if (hours === 0) {//清空不需要弹窗
+                        boolSubmit = false;
+                    } else {
+                        // layer.msg("时间选择成功，上课时间为：" + hours.toFixed(2) + "小时", {icon: 6});
+                        boolSubmit = true;
+                    }
+
+                    //把存在sessionStorage中的申请的classroomId取出来
+                    var classroomId = sessionStorage.getItem("classroomId");
+
+                    if (!boolSubmit) {
+                        layer.alert("时间选择不规范");
+                        return false;
+                    } else if (!applyClassroomDay) {
+                        return false;
+                    } else {
+
+                        var apply = {};
+
+                        //组装数据
+                        apply.beginTime = applyClassroomDay + " " + data.field.beginHour;
+                        apply.endTime = applyClassroomDay + " " + data.field.endHour;
+                        apply.classroomId = classroomId;
+                        apply.reason = data.field.reason;
+
+                        //发异步，把数据提交给controller
+                        $.ajax({
+                            url: "apply/addApply",
+                            data: JSON.stringify(apply),
+                            dataType: "json",
+                            contentType: "application/json",
+                            type: "post",
+                            success: function (result) {
+                                if (result.code === 200) {
+                                    layer.msg("申请成功", {icon: 6, time: 400},
+                                        function () {
+                                            //关闭当前frame
+                                            xadmin.close();
+                                            // 可以对主窗口进行刷新
+                                            top.location.reload();
+                                        });
+                                } else {
+                                    layer.alert("申请失败," + result.msg + "！");
+                                }
+                            }
+                        });
+
+                    }
+                    return false;
+                });
+
+
+            var nowTime = new Date();
+            /*var dayInWeek = nowTime.getDay();
+            if (dayInWeek === 0) {
+                dayInWeek = 7;
+            }*/
+            var thisWeekLastDay = nowTime.getTime() + (7) * 86400000;
+            formateDate = function (time) {
+                var newTime = new Date(time);
+                var year = newTime.getFullYear();
+                var month = newTime.getMonth() + 1;
+                var day = newTime.getDate();
+                return year + "-" + (month >= 10 ? month : "0" + month) + "-" + (day >= 10 ? day : "0" + day);
+            };
+
+            var nowDate = formateDate(nowTime);
+            var weekLastDay = formateDate(thisWeekLastDay);
+
+            /*//时间范围
+            var applyTime = laydate.render({
+                elem: '#applyTime',
+                type: 'time',
+                min: '07:00:00',
+                max: '21:00:00',
+                range: '~',
+                done: function (value) {
+
+                    var beginTime = value.substring(0, value.indexOf("~")).trim();
+                    var endTime = value.substring(value.indexOf("~") + 1).trim();
+                    applyClassroomStartTime = beginTime;
+                    applyClassroomEndTime = endTime;
+
+                    var starts = new Date(nowDate + " " + beginTime), ends = new Date(nowDate + " " + endTime);
+                    var hours = (ends.getTime() - starts.getTime()) / (1000 * 60 * 60);
+                    hours = isNaN(hours) ? 0 : hours;
+                    //大于2个小时，2课时
+                    if (hours > 2) {
+                        layer.msg("时间超过了两个小时！", {icon: 5});
+                        boolSubmit = false;
+                    } else if (hours < 0 || (hours === 0 && value)) {
+                        layer.msg("请选择正确的申请时间！", {icon: 5});
+                        boolSubmit = false;
+                    } else if (hours === 0) {//清空不需要弹窗
+                        boolSubmit = false;
+                    } else {
+                        layer.msg("时间选择成功，借用时间为：" + hours.toFixed(2) + "小时", {icon: 6});
+                        boolSubmit = true;
+                    }
+                }
+            });*/
+
+            //常规用法
+            var applyDate = laydate.render({
+                elem: '#applyDate',
+                min: nowDate,
+                max: weekLastDay,
+                ready: function () {
+                    applyDate.hint('日期可选值设定在 <br> ' + nowDate + ' 到 ' + weekLastDay, 200);
+                },
+                done: function (value) {
+                    applyClassroomDay = value;
+
+                    /*//代表是今天，那么时间范围要小于当前时间
+                    var newDate = new Date();
+
+                    var year = newDate.getFullYear();
+                    var month = newDate.getMonth() + 1;
+                    var date = newDate.getDate();
+                    var hour = newDate.getHours();
+                    var minutes = newDate.getMinutes();
+                    var seconds = newDate.getSeconds();
+
+                    alert("year" + year);
+                    alert("month" + month);
+                    alert("date" + date);
+                    alert("hour" + hour);
+                    alert("minutes" + minutes);
+                    alert("seconds" + seconds);
+
+                    if (value == nowDate) {
+
+                        if (hour > 21) {
+                            return;
+                        }
+
+                        applyTime.config.min = {
+                            year: year,
+                            month: month,
+                            date: date,
+                            hours: hour,
+                            minutes: minutes,
+                            seconds: seconds
+                        };
+
+                        applyTime.config.max = {
+                            year: year,
+                            month: month,
+                            date: date,
+                            hours: 21,
+                            minutes: 0,
+                            seconds: 0
+                        };
+
+                    } else {
+
+                        applyTime.config.min = {
+                            year: year,
+                            month: month,
+                            date: date,
+                            hours: 7,
+                            minutes: 0,
+                            seconds: 0
+                        };
+
+                        applyTime.config.max = {
+                            year: year,
+                            month: month,
+                            date: date,
+                            hours: 21,
+                            minutes: 0,
+                            seconds: 0
+                        };
+                    }*/
+
+                    /*//激活
+                    $("#applyTime").prop("disabled", false);
+
+                    if (value == "") {
+                        //取消
+                        $("#applyTime").prop("disabled", true);
+                    }*/
+                }
+            });
+
+
+        });
+</script>
+</body>
+
+</html>

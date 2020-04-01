@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.classroom.mapper.ApplyMapper">
+
+    <!--查询所有applyVOMap-->
+    <resultMap id="applyVOMap" type="ApplyVO">
+        <id column="id" property="applyId"/>
+        <association property="apply" javaType="Apply">
+            <id column="id" property="id"/>
+            <result property="beginTime" column="begin_time"/>
+            <result property="endTime" column="end_time"/>
+            <result property="classroomId" column="classroom_id"/>
+            <result property="userId" column="user_id"/>
+            <result property="reason" column="reason"/>
+            <result property="status" column="status"/>
+        </association>
+        <association property="user" javaType="User">
+            <id column="id" property="id"/>
+            <result property="userNo" column="user_no"/>
+            <result property="name" column="username"/>
+            <result property="password" column="password"/>
+            <result property="role" column="role"/>
+        </association>
+        <association property="classroom" javaType="Classroom">
+            <id column="id" property="id"/>
+            <result property="name" column="classroomName"/>
+            <result property="type" column="type"/>
+        </association>
+    </resultMap>
+
+    <!--查询所有的申请VO-->
+    <select id="queryApplyVOList" resultMap="applyVOMap">
+        SELECT *, a.id as applyId, s.name as username, d.name as classroomName from apply as a inner join user as s on a.user_id = s.id inner join classroom
+        as d on a.classroom_id = d.id
+        <where>
+            <if test="userId != null">
+                and a.user_id = #{userId}
+            </if>
+            <if test="role != null">
+                and s.role = #{role}
+            </if>
+            <if test="classroomId != null">
+                and a.classroom_id = #{classroomId}
+            </if>
+            <if test="status != null">
+                and a.status &gt;= #{status}
+            </if>
+        </where>
+        order by a.id desc
+    </select>
+
+    <!--审批状态status 1、审批中 2、审批通过3、不同意-->
+    <update id="auditApplyStatusById">
+        update `apply`
+        set status = #{status}
+        where id = #{id};
+    </update>
+
+    <!--添加一个申请记录-->
+    <insert id="addApply">
+        INSERT INTO `apply` (`classroom_id`,
+                             `user_id`,
+                             `begin_time`,
+                             `end_time`,
+                             `reason`,
+                             `status`)
+        VALUES (#{apply.classroomId}, #{apply.userId}, #{apply.beginTime}, #{apply.endTime}, #{apply.reason}, DEFAULT);
+    </insert>
+
+    <!--撤销申请-->
+    <update id="cancelApply">
+        update apply
+        set show_status = 1
+        where id = #{id};
+    </update>
+
+    <!--删除申请-->
+    <delete id="deleteApply">
+        delete
+        from apply
+        where id = #{id};
+    </delete>
+
+    <!--查询申请时该时间段教室是否已被申请(申请状态不能是被拒绝的或是撤销申请的)-->
+    <select id="getApplyByClassroomAndTime" resultType="Apply">
+        Select *
+        from apply
+        where classroom_id = #{classroomId}
+          and status &lt;&gt; 2
+          and show_status &lt;&gt; 1
+          and ((begin_time &gt;= #{beginTime} and begin_time &lt; #{endTime}) OR (end_time &gt; #{beginTime} and end_time &lt;= #{endTime}));
+    </select>
+
+    <!--查询空闲时间段是否申请该教室-->
+    <select id="getApplyByBeginTimeAndEndTime" resultType="Apply">
+        Select *
+        from apply
+        where classroom_id = #{classroomId}
+          and status &lt;&gt; 2
+          and show_status &lt;&gt; 1
+          and ((#{beginTime} &gt;= begin_time and #{beginTime} &lt; end_time) OR (#{endTime} &gt; begin_time and #{endTime} &lt;= end_time));
+    </select>
+
+
+</mapper>
