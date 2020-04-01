@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.classroom.mapper.ApplyMapper">
+<mapper namespace="com.mapper.ApplyMapper">
 
     <!--查询所有applyVOMap-->
     <resultMap id="applyVOMap" type="ApplyVO">
