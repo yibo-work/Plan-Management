@@ -1,13 +1,20 @@
 package com.service;
 
+import com.pojo.Role;
 import com.pojo.User;
-
-import java.util.List;
+import com.vo.UserVO;
 
 
 public interface IUserService {
-    
-    User login(User user);
-    
-    List<User> getAllTeacher();
+
+    UserVO login(User user);
+
+    void modifyUser(User user);
+
+    void addUser(User user);
+
+    void updateRole(Role role);
+
+    void deleteUserById(Integer id);
+
 }

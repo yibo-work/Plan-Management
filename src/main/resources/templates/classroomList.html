@@ -27,36 +27,52 @@
     <div class="layui-row layui-col-space15">
         <div class="layui-col-md12" id="vmClassroom">
             <div class="layui-card">
-                <div class="layui-card-body">
-                    <form class="layui-form layui-col-space5" onsubmit="return false;">
-                        <div class="layui-input-inline layui-show-xs-block">
-                            <select name="type">
-                                <option value="">教室类型</option>
-                                <option th:each="classroom,index : ${session.CLASSROOM}" th:value="${classroom.typeId}">[[${classroom.typeName}]]</option>
-                            </select>
-                        </div>
-                        <div class="layui-input-inline layui-show-xs-block">
-                            <input class="layui-input" name="name" placeholder="请输入教学楼名称" type="text"></div>
-                        <div class="layui-input-inline layui-show-xs-block">
-                            <input autocomplete="off" class="layui-input" id="freeTime" lay-key="1" name="start" placeholder="空闲时间段"></div>
-                        <div class="layui-input-inline layui-show-xs-block">
-                            <button @click="getPage(1)" class="layui-btn" lay-filter="search" lay-submit="" v-on:keyup.enter="search()">
-                                <i class="layui-icon">&#xe615;</i></button>
-                        </div>
-                    </form>
+
+                <div class="layui-card-header">
+                    <button class="layui-btn" onclick="xadmin.open('客户信息录入','/classroomAdd',700,600)">
+                        <i class="layui-icon"></i>客户信息录入
+                    </button>
                 </div>
                 <div class="layui-card-body">
                     <table class="layui-table layui-form">
                         <thead>
                         <tr>
                             <th>序号</th>
-                            <th>教学楼</th>
-                            <th>教室类型</th>
+                            <th>公司名称</th>
+                            <th>负责人</th>
+                            <th>联系人</th>
+                            <th>公司地址</th>
                             <th>操作</th>
                         </tr>
                         </thead>
                         <tbody>
-                        <tr v-for="classroom,i in pageInfo.list">
+                        <tr>
+                            <td>1</td>
+                            <td>1</td>
+                            <td>1</td>
+                            <td>1</td>
+                            <td>1</td>
+                            <td><button  class="layui-btn apply" onclick="xadmin.open('申请借用','/applyAdd',600,500)">
+                                <i class="layui-icon layui-icon-edit"></i>编辑
+                            </button>
+                                <button  class="layui-btn layui-btn-danger detail" onclick="xadmin.open('查看详情','/classroomTimeList',1000,600)">
+                                    <i class="layui-icon layui-icon-delete"></i>删除
+                                </button></td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>2</td>
+                            <td>2</td>
+                            <td>2</td>
+                            <td>2</td>
+                            <td><button  class="layui-btn apply" onclick="xadmin.open('申请借用','/applyAdd',600,500)">
+                                <i class="layui-icon layui-icon-edit"></i>编辑
+                            </button>
+                                <button  class="layui-btn layui-btn-danger  detail" onclick="xadmin.open('查看详情','/classroomTimeList',1000,600)">
+                                    <i class="layui-icon layui-icon-delete"></i>删除
+                                </button></td>
+                        </tr>
+                        <!--<tr v-for="classroom,i in pageInfo.list">
                             <td v-text="i+1">老王:18925139194</td>
                             <td v-text="classroom.name">7829.10</td>
                             <td v-if="classroom.type==1">教室</td>
@@ -69,17 +85,17 @@
                                     <i class="layui-icon"></i>查看详情
                                 </button>
                             </td>
-                        </tr>
-                        <tr v-if="pageInfo.total == 0">
+                        </tr>-->
+                        <!--<tr v-if="pageInfo.total == 0">
                             <td colspan="4" style="text-align: center">没有找到教室！</td>
-                        </tr>
+                        </tr>-->
                         </tbody>
                     </table>
                 </div>
-                <div class="layui-card-body" v-if="pageInfo.total != 0">
+                <!--<div class="layui-card-body" v-if="pageInfo.total != 0">
                     <div class="page">
                         <div>
-                            <a @click="getPage(pageInfo.firstPage)" class="prev" href="javascript:void(0)" v-if="!pageInfo.isFirstPage">
+                            <a class="prev" href="javascript:void(0)">
                                 首页
                             </a>
                             <a @click="getPage(pageInfo.prePage)" class="prev" href="javascript:void(0)" v-if="pageInfo.hasPreviousPage">
@@ -94,7 +110,7 @@
                             </a>
                         </div>
                     </div>
-                </div>
+                </div>-->
             </div>
         </div>
     </div>

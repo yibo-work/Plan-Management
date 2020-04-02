@@ -11,7 +11,7 @@ spring:
     static-locations: classpath:/static
 #port
 server:
-  port: 8088
+  port: 9002
 # mybatis
 mybatis:
   mapper-locations: classpath:/mapping/*.xml

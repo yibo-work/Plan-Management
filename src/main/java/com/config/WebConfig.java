@@ -17,10 +17,6 @@ import java.util.List;
 @ServletComponentScan
 public class WebConfig implements WebMvcConfigurer {
     
-    /**
-     * @title httpMessageConverters
-     * @description FastJson配置
-     */
     @Bean
     public HttpMessageConverters httpMessageConverters() {
         FastJsonHttpMessageConverter fjhmc = new FastJsonHttpMessageConverter();

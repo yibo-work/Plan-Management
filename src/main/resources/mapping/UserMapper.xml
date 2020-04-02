@@ -5,19 +5,57 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.mapper.UserMapper">
 
-    <!--登录-->
-    <select id="login" resultType="user">
-        Select id, user_no, name, password, role
-        from user
-        where user_no = #{user.userNo}
-          and password = #{user.password}
-    </select>
+    <!--添加用户-->
+    <insert id="addUser">
+        insert into user(name, password, phone, role_id)
+            value (#{user.name,jdbcType=VARCHAR},
+                   #{user.password,jdbcType=VARCHAR},
+                   #{user.phone,jdbcType=VARCHAR},
+                   #{user.roleId,jdbcType=INTEGER});
+    </insert>
 
-    <!--查询所有的老师-->
-    <select id="getAllTeacher" resultType="user">
-        Select id, user_no, name, password, role
+    <!--修改权限-->
+    <update id="modifyUser">
+        update user
+        set role_id = #{user.roleId,jdbcType=INTEGER}
+        where id = #{user.id,jdbcType=INTEGER}
+    </update>
+
+    <!--角色管理-->
+    <update id="updateRole">
+        update role
+        set auths = #{role.auths,jdbcType=VARCHAR}
+        where id = #{role.id,jdbcType=INTEGER}
+    </update>
+    <delete id="deleteUserById">
+        DELETE
         from user
-        where role = 2
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+
+    <!--查询所有applyVOMap-->
+    <resultMap id="UserVOMap" type="com.vo.UserVO">
+        <association property="user" javaType="com.pojo.User">
+            <id column="userId" property="id"/>
+            <result property="name" column="username"/>
+            <result property="password" column="password"/>
+            <result property="phone" column="phone"/>
+            <result property="roleId" column="roleId"/>
+        </association>
+        <association property="role" javaType="com.pojo.Role">
+            <id column="roleId" property="id"/>
+            <result property="name" column="roleName"/>
+            <result property="auths" column="auths"/>
+        </association>
+    </resultMap>
+
+    <!--登录-->
+    <select id="login" resultMap="UserVOMap">
+        Select *, a.name as username, s.name as roleName, a.id as userId, s.id as roleId
+        from user as a
+                 inner join `role` s ON a.role_id = s.id
+        where a.name = #{user.name}
+          and password = #{user.password}
     </select>
 
 

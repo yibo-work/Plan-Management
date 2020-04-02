@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mapper.CustomerMapper">
+
+
+    <!--查询客户-->
+    <select id="queryCustomerList" resultType="com.pojo.Customer">
+        select id, company_name, man, phone, address, plan_flag
+        from customer
+    </select>
+
+    <!--新增客户-->
+    <insert id="addCustomer">
+        insert into customer(company_name, man, phone, address)
+        values (#{customer.companyName,jdbcType=VARCHAR}, #{customer.man,jdbcType=VARCHAR},
+                #{customer.phone,jdbcType=VARCHAR}, #{customer.address,jdbcType=VARCHAR});
+    </insert>
+
+    <!--查询单个客户-->
+    <select id="getCustomerById" resultType="com.pojo.Customer" useCache="true">
+        Select *
+        from customer
+        where id = #{id};
+    </select>
+
+    <!--修改客户-->
+    <update id="updateCustomer">
+        update customer
+        set company_name = #{customer.companyName,jdbcType=VARCHAR},
+            man=#{customer.man},
+            phone=#{customer.phone},
+            address      = #{customer.address},
+            plan_flag=#{customer.planFlag}
+        where id = #{customer.id}
+    </update>
+
+    <!--删除客户-->
+    <delete id="removeCustomerById">
+        delete
+        from customer
+        where id = #{id}
+    </delete>
+
+
+</mapper>

@@ -19,23 +19,38 @@
         <form class="layui-form">
             <div class="layui-form-item">
                 <label class="layui-form-label" for="classroomName">
-                    <span class="x-red">*</span>教学楼
+                    <span class="x-red">*</span>公司名称
                 </label>
                 <div class="layui-input-block">
                     <div class="layui-input-inline layui-show-xs-block">
                         <input class="layui-input" id="classroomName" lay-verify="required" name="name" type="text">
                     </div>
                 </div>
-            </div>
-            <div class="layui-form-item">
-                <label class="layui-form-label" for="classType">
-                    <span class="x-red">*</span>教室类型
+            </div><div class="layui-form-item">
+                <label class="layui-form-label" for="classroomName">
+                    <span class="x-red">*</span>负责人
                 </label>
                 <div class="layui-input-block">
                     <div class="layui-input-inline layui-show-xs-block">
-                        <select id="classType" name="type">
-                            <option th:each="classroom,index : ${session.CLASSROOM}" th:value="${classroom.typeId}">[[${classroom.typeName}]]</option>
-                        </select>
+                        <input class="layui-input" id="classroomName" lay-verify="required" name="name" type="text">
+                    </div>
+                </div>
+            </div><div class="layui-form-item">
+                <label class="layui-form-label" for="classroomName">
+                    <span class="x-red">*</span>联系电话
+                </label>
+                <div class="layui-input-block">
+                    <div class="layui-input-inline layui-show-xs-block">
+                        <input class="layui-input" id="classroomName" lay-verify="required" name="name" type="text">
+                    </div>
+                </div>
+            </div><div class="layui-form-item">
+                <label class="layui-form-label" for="classroomName">
+                    <span class="x-red">*</span>公司地址
+                </label>
+                <div class="layui-input-block">
+                    <div class="layui-input-inline layui-show-xs-block">
+                        <input class="layui-input" id="classroomName" lay-verify="required" name="name" type="text">
                     </div>
                 </div>
             </div>

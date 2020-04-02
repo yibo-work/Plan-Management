@@ -1,28 +1,26 @@
 package com.controller;
 
-import com.enums.ClassroomAuditEnum;
-import com.enums.ClassroomTypeEnum;
+import com.enums.PlanTypeEnum;
+import com.pojo.Role;
+import com.pojo.User;
+import com.vo.UserVO;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author Clrvn
- * @description
- * @className HelloController
- * @date 2019-05-16 21:54
  */
 @Controller
 public class HelloController {
-    
+
     @GetMapping("/login")
     public String login() {
         return "login";
     }
-    
+
     @GetMapping("loginOut")
     public String loginOut(HttpSession session) {
         session.removeAttribute("USER");
@@ -30,107 +28,103 @@ public class HelloController {
         session.getServletContext().removeAttribute(session.getId());
         return "login";
     }
-    
-    @GetMapping("/index")
-    public String index(HttpSession session) {
-        //默认，不用登录
-        /*User user1 = new User();
-        user1.setId(1);
-        user1.setUserNo("wang");
-        user1.setName("小王");
-        user1.setPassword("46f94c8de14fb36680850768ff1b7f2a");
-        user1.setRole(UserRoleConstant.ROLE_STUDENT);
-        
-        User user2 = new User();
-        user2.setId(3);
-        user2.setUserNo("chen");
-        user2.setName("老陈");
-        user2.setPassword("46f94c8de14fb36680850768ff1b7f2a");
-        user2.setRole(UserRoleConstant.ROLE_TEACHER);*/
-        
-        //教室类型枚举列表
-        List<ClassroomTypeEnum> classroomTypeEnumList = new ArrayList<>();
-        
-        classroomTypeEnumList.add(ClassroomTypeEnum.CLASSROOM_TEACHER);
-        classroomTypeEnumList.add(ClassroomTypeEnum.CLASSROOM_LAB);
-        
-        //审批类型枚举列表
-        List<ClassroomAuditEnum> classroomAuditEnumList = new ArrayList<>();
-        
-        classroomAuditEnumList.add(ClassroomAuditEnum.CLASSROOM_AUDIT_PASS);
-        classroomAuditEnumList.add(ClassroomAuditEnum.CLASSROOM_AUDIT_NOT_PASS);
 
-//        session.setAttribute("USER", user2);
-        session.setAttribute("CLASSROOM", classroomTypeEnumList);
-        session.setAttribute("AUDIT", classroomAuditEnumList);
-        
+    @GetMapping("/index")
+    public String index(HttpSession session, Model model) {
+        //默认，不用登录
+        UserVO user2 = new UserVO();
+        User user = new User();
+        user.setId(3);
+        user.setName("chen");
+        user.setPassword("123qwe");
+        user.setRoleId(4);
+
+        user2.setUser(user);
+        Role role = new Role();
+        role.setId(1);
+        role.setName("管理员");
+        role.setAuths("计划执行,计划查询,计划定制,计划管理,客户信息管理,无计划客户查询,后台管理");
+
+        user2.setRole(role);
+
+        session.setAttribute("PLAN_TYPE", PlanTypeEnum.values());
+        // 测试时取消前三行，加上后三行注释
+
+        session.setAttribute("USER", user2);
+        model.addAttribute("auths", user2.getRole().getAuths());
         return "index";
+
+
+//        UserVO userVo = (UserVO) session.getAttribute("USER");
+//        model.addAttribute("auths", userVo.getRole().getAuths());
+//        return "index";
+
+
     }
-    
+
     @GetMapping("/welcome")
     public String welcome() {
         return "welcome";
     }
-    
+
     @GetMapping("/classroomList")
     public String queryAll() {
         return "classroomList";
     }
-    
+
     @GetMapping("/applyAdd")
     public String applyAdd() {
         return "applyAdd";
     }
-    
+
     @GetMapping("/applyList")
     public String applyList() {
         return "applyList";
     }
-    
+
     @GetMapping("/applyHistoryList")
     public String applyHistoryList() {
         return "applyHistoryList";
     }
-    
+
     @GetMapping("/classroomManage")
     public String classroomManage() {
         return "classroomManage";
     }
-    
+
     @GetMapping("/classroomAdd")
     public String classroomAdd() {
         return "classroomAdd";
     }
-    
+
     @GetMapping("/classroomUpdate")
     public String classroomUpdate() {
         return "classroomUpdate";
     }
-    
+
     @GetMapping("/courseManage")
     public String courseManage() {
         return "courseManage";
     }
-    
+
     @GetMapping("/courseAdd")
     public String courseAdd() {
         return "courseAdd";
     }
-    
+
     @GetMapping("/courseUpdate")
     public String courseUpdate() {
         return "courseUpdate";
     }
-    
+
     @GetMapping("/auditList")
     public String auditList() {
         return "auditList";
     }
-    
+
     @GetMapping("/classroomTimeList")
     public String classroomTimeList() {
         return "classroomTimeList";
     }
-    
-    
+
 }

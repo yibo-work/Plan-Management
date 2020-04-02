@@ -2,7 +2,7 @@
 <html class="x-admin-sm" lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>教室资源管理</title>
+    <title>计划管理系统</title>
     <meta content="webkit|ie-comp|ie-stand" name="renderer">
     <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
     <meta content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8" name="viewport"/>
@@ -23,14 +23,15 @@
 <!-- 顶部开始 -->
 <div class="container">
     <div class="logo">
-        <a target="_top" th:href="@{/index}">教室资源申请系统</a></div>
+        <a target="_top" th:href="@{/index}">计划管理系统</a></div>
     <div class="left_open">
         <a><i class="iconfont" title="展开左侧栏">&#xe699;</i></a>
     </div>
     <ul class="layui-nav right" lay-filter="">
         <li class="layui-nav-item">
-            <a href="javascript:" th:text="${session.USER.name}">admin<span th:if="${session.USER.role == 1}">【用户】</span><span
-                    th:if="${session.USER.role == 2}">【管理员】</span></a>
+            <!--<a href="javascript:" th:text="${session.USER.name}">admin<span th:if="${session.USER.role == 1}">【用户】</span><span
+                    th:if="${session.USER.role == 2}">【管理员】</span></a>-->
+            <a href="javascript:">admin<span>【管理员】</span></a>
             <dl class="layui-nav-child">
                 <dd>
                     <a th:href="@{/loginOut}">退出</a></dd>
@@ -44,49 +45,112 @@
 <div class="left-nav">
     <div id="side-nav">
         <ul id="nav">
-            <li th:if="${session.USER.role >= 1}">
+            <li th:if="${auths != null and #strings.contains(auths,'客户信息管理')}">
                 <a href="javascript:">
-                    <i class="iconfont left-nav-li" lay-tips="用户管理">&#xe6b8;</i>
-                    <cite>用户管理</cite>
+                    <i class="iconfont left-nav-li" lay-tips="客户信息管理">&#xe6b8;</i>
+                    <cite>客户信息管理</cite>
                     <i class="iconfont nav_right">&#xe697;</i></a>
                 <ul class="sub-menu">
                     <li>
-                        <a onclick="xadmin.add_tab('申请借用','/classroomList')">
+                        <a onclick="xadmin.add_tab('客户信息管理','/classroomList')">
                             <i class="iconfont">&#xe6a7;</i>
-                            <cite>申请借用</cite></a>
-                    </li>
-                    <li>
-                        <a onclick="xadmin.add_tab('撤销申请','/applyList')">
-                            <i class="iconfont">&#xe6a7;</i>
-                            <cite>撤销申请</cite></a>
-                    </li>
-                    <li>
-                        <a onclick="xadmin.add_tab('申请记录','/applyHistoryList')">
-                            <i class="iconfont">&#xe6a7;</i>
-                            <cite>申请记录</cite></a>
+                            <cite>客户信息管理</cite></a>
                     </li>
                 </ul>
             </li>
-            <li th:if="${session.USER.role > 1}">
+            <li th:if="${auths != null and #strings.contains(auths,'计划定制')}">
                 <a href="javascript:">
-                    <i class="iconfont left-nav-li" lay-tips="管理员管理">&#xe726;</i>
-                    <cite>管理员管理</cite>
+                    <i class="iconfont left-nav-li" lay-tips="计划定制">&#xe726;</i>
+                    <cite>计划定制</cite>
                     <i class="iconfont nav_right">&#xe697;</i></a>
                 <ul class="sub-menu">
                     <li>
-                        <a onclick="xadmin.add_tab('教室管理','/classroomManage')">
+                        <a onclick="xadmin.add_tab('周计划定制','/classroomManage')">
                             <i class="iconfont">&#xe6a7;</i>
-                            <cite>教室管理</cite></a>
+                            <cite>周计划定制</cite></a>
                     </li>
                     <li>
-                        <a onclick="xadmin.add_tab('课程管理','/courseManage')">
+                        <a onclick="xadmin.add_tab('月计划定制','/courseManage')">
                             <i class="iconfont">&#xe6a7;</i>
-                            <cite>课程管理</cite></a>
+                            <cite>月计划定制</cite></a>
                     </li>
                     <li>
-                        <a onclick="xadmin.add_tab('待办申请','/auditList')">
+                        <a onclick="xadmin.add_tab('季度计划定制','/auditList')">
                             <i class="iconfont">&#xe6a7;</i>
-                            <cite>待办申请</cite></a>
+                            <cite>季度计划定制</cite></a>
+                    </li>
+                    <li>
+                        <a onclick="xadmin.add_tab('年计划定制','/auditList')">
+                            <i class="iconfont">&#xe6a7;</i>
+                            <cite>年计划定制</cite></a>
+                    </li>
+                </ul>
+            </li>
+            <li th:if="${auths != null and #strings.contains(auths,'计划管理')}">
+                <a href="javascript:">
+                    <i class="iconfont left-nav-li" lay-tips="计划管理">&#xe726;</i>
+                    <cite>计划管理</cite>
+                    <i class="iconfont nav_right">&#xe697;</i></a>
+                <ul class="sub-menu">
+                    <li>
+                        <a onclick="xadmin.add_tab('计划管理','/classroomManage')">
+                            <i class="iconfont">&#xe6a7;</i>
+                            <cite>计划管理</cite></a>
+                    </li>
+
+                </ul>
+            </li>
+            <li th:if="${auths != null and #strings.contains(auths,'计划执行')}">
+                <a href="javascript:">
+                    <i class="iconfont left-nav-li" lay-tips="计划执行">&#xe726;</i>
+                    <cite>计划执行</cite>
+                    <i class="iconfont nav_right">&#xe697;</i></a>
+                <ul class="sub-menu">
+                    <li>
+                        <a onclick="xadmin.add_tab('计划审批','/classroomManage')">
+                            <i class="iconfont">&#xe6a7;</i>
+                            <cite>计划审批</cite></a>
+                    </li>
+                    <li>
+                        <a onclick="xadmin.add_tab('执行计划记录','/classroomManage')">
+                            <i class="iconfont">&#xe6a7;</i>
+                            <cite>执行计划记录</cite></a>
+                    </li>
+                </ul>
+            </li>
+            <li th:if="${auths != null and #strings.contains(auths,'计划查询')}">
+                <a href="javascript:">
+                    <i class="iconfont left-nav-li" lay-tips="计划查询">&#xe726;</i>
+                    <cite>计划查询</cite>
+                    <i class="iconfont nav_right">&#xe697;</i></a>
+                <ul class="sub-menu">
+                    <li>
+                        <a onclick="xadmin.add_tab('已执行计划查询','/classroomManage')">
+                            <i class="iconfont">&#xe6a7;</i>
+                            <cite>已执行计划查询</cite></a>
+                    </li>
+                    <li>
+                        <a onclick="xadmin.add_tab('无计划客户查询','/classroomManage')">
+                            <i class="iconfont">&#xe6a7;</i>
+                            <cite>无计划客户查询</cite></a>
+                    </li>
+                </ul>
+            </li>
+            <li th:if="${auths != null and #strings.contains(auths,'后台管理')}">
+                <a href="javascript:">
+                    <i class="iconfont left-nav-li" lay-tips="后台管理">&#xe726;</i>
+                    <cite>后台管理</cite>
+                    <i class="iconfont nav_right">&#xe697;</i></a>
+                <ul class="sub-menu">
+                    <li>
+                        <a onclick="xadmin.add_tab('用户管理','/classroomManage')">
+                            <i class="iconfont">&#xe6a7;</i>
+                            <cite>用户管理</cite></a>
+                    </li>
+                    <li>
+                        <a onclick="xadmin.add_tab('角色管理','/classroomManage')">
+                            <i class="iconfont">&#xe6a7;</i>
+                            <cite>角色管理</cite></a>
                     </li>
                 </ul>
             </li>
