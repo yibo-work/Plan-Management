@@ -13,7 +13,7 @@ public enum PlanTypeEnum {
     WEEK(1, "周计划"),
     MONTH(2, "月计划"),
     QUARTER(3, "季度计划"),
-    YEAR(4, "季度计划"),
+    YEAR(4, "年计划"),
     ;
 
     private Integer typeId;

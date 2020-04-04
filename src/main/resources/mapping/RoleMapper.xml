@@ -8,7 +8,7 @@
     <!--权限管理-->
     <update id="updateRole">
         update role
-        set auths = #{role.auths,jdbcType=VARCHAR}
+        set auths = #{role.auths}
         where id = #{role.id,jdbcType=INTEGER}
     </update>
 

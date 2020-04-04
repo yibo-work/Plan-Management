@@ -117,7 +117,7 @@
             pageInfo: {}
         },
         methods: {
-            getPage: function (pageNum, pageSize, type, companyName, execTime) {
+            getPage: function (pageNum, pageSize) {
                 var _this = this;
                 var url = "/plan/page?pageNum=" + pageNum;
 
@@ -129,6 +129,10 @@
 
                 //审批通过的计划状态
                 url += "&status=" + 1;
+
+                var type = $(":selected").val();
+                var companyName = $("[name=companyName]").val().trim();
+                var execTime = $("[name=execTime]").val().trim();
 
                 if (type) {
                     url += "&type=" + type;
@@ -152,11 +156,7 @@
     });
 
     search = function () {
-
-        var type = $(":selected").val();
-        var companyName = $("[name=companyName]").val().trim();
-        var execTime = $("[name=execTime]").val().trim();
-        vm.getPage(1, 5, type, companyName, execTime);
+        vm.getPage(1, 5);
     };
 
 </script>

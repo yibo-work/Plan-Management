@@ -6,10 +6,7 @@ import com.service.IRoleService;
 import com.utils.ResultVOUtil;
 import com.vo.ResultVO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/role")
@@ -19,7 +16,7 @@ public class RoleController {
     private IRoleService roleService;
 
     @RequestMapping("/updateRole")
-    public ResultVO updateRole(Role role) {
+    public ResultVO updateRole(@RequestBody Role role) {
         roleService.updateRole(role);
         return ResultVOUtil.success();
     }
@@ -34,7 +31,7 @@ public class RoleController {
         Role role = roleService.getRoleById(roleId);
         return ResultVOUtil.success(role);
     }
-    
+
     @GetMapping("/page")
     public PageInfo<Role> queryAllPlan(@RequestParam("pageNum") Integer pageNum
             , @RequestParam("pageSize") Integer pageSize) {

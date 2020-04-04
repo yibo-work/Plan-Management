@@ -29,9 +29,8 @@
     </div>
     <ul class="layui-nav right" lay-filter="">
         <li class="layui-nav-item">
-            <!--<a href="javascript:" th:text="${session.USER.name}">admin<span th:if="${session.USER.role == 1}">【用户】</span><span
-                    th:if="${session.USER.role == 2}">【管理员】</span></a>-->
-            <a href="javascript:">admin<span>【管理员】</span></a>
+            <a href="javascript:"><span style="color:red" th:text="${session.USER.user.name}"></span> 【<span
+                    th:text="${session.USER.role.name}"></span>】</a>
             <dl class="layui-nav-child">
                 <dd>
                     <a th:href="@{/loginOut}">退出</a></dd>
@@ -186,7 +185,4 @@
 <!-- 右侧主体结束 -->
 <!-- 中部结束 -->
 </body>
-<script th:inline="javascript">
-    sessionStorage.setItem("USER_ROLE", [[${session.USER.role}]]);
-</script>
 </html>

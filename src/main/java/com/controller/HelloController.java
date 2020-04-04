@@ -50,14 +50,14 @@ public class HelloController {
         session.setAttribute("PLAN_TYPE", PlanTypeEnum.values());
         // 测试时取消前三行，加上后三行注释
 
-        session.setAttribute("USER", user2);
+        /*session.setAttribute("USER", user2);
         model.addAttribute("auths", user2.getRole().getAuths());
+        return "index";*/
+
+
+        UserVO userVo = (UserVO) session.getAttribute("USER");
+        model.addAttribute("auths", userVo.getRole().getAuths());
         return "index";
-
-
-//        UserVO userVo = (UserVO) session.getAttribute("USER");
-//        model.addAttribute("auths", userVo.getRole().getAuths());
-//        return "index";
 
 
     }

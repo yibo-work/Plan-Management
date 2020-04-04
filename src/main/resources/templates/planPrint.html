@@ -29,57 +29,60 @@
         <div class="layui-col-md12" id="vmPlan">
             <div class="layui-card">
                 <div class="layui-card-header">
-                    <button class="layui-btn" onclick="alert('打印中。。。')">
+                    <button class="layui-btn" onclick="dayin()">
                         <i class="layui-icon layui-icon-print"></i>打印
                     </button>
                 </div>
-                <div class="layui-card-body">
-                    <table class="layui-table layui-form">
-                        <thead>
-                        <tr>
-                            <th>计划类型</th>
-                            <th>执行时间</th>
-                            <th>公司名称</th>
-                            <th>公司地址</th>
-                            <th>联系电话</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr v-for="planVO,i in pageInfo.list">
-                            <td v-if="planVO.plan.type==1">周计划</td>
-                            <td v-if="planVO.plan.type==2">月计划</td>
-                            <td v-if="planVO.plan.type==3">季度计划</td>
-                            <td v-if="planVO.plan.type==4">年计划</td>
-                            <td v-text="planVO.plan.execTime"></td>
-                            <td v-text="planVO.plan.companyName"></td>
-                            <td v-text="planVO.plan.address"></td>
-                            <td v-text="planVO.plan.phone"></td>
-                        </tr>
-                        <tr v-if="pageInfo.total == 0">
-                            <td colspan="5" style="text-align: center">暂无计划！</td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="layui-card-body" v-if="pageInfo.total != 0">
-                    <div class="page">
-                        <div>
-                            <a class="prev" href="javascript:void(0)">
-                                首页
-                            </a>
-                            <a @click="getPage(pageInfo.prePage)" class="prev" href="javascript:void(0)"
-                               v-if="pageInfo.hasPreviousPage">
-                                上一页
-                            </a>
-                            <span @click="getPage(pageInfo.pageNum)" class="current">{{pageInfo.pageNum}} / {{pageInfo.pages}}</span>
-                            <a @click="getPage(pageInfo.nextPage)" class="next" href="javascript:void(0)"
-                               v-if="pageInfo.hasNextPage">
-                                下一页
-                            </a>
-                            <a @click="getPage(pageInfo.lastPage)" class="prev" href="javascript:void(0)"
-                               v-if="!pageInfo.isLastPage">
-                                末页
-                            </a>
+                <!--打印内容开始-->
+                <div id="wdf">
+                    <div class="layui-card-body">
+                        <table class="layui-table layui-form">
+                            <thead>
+                            <tr>
+                                <th>计划类型</th>
+                                <th>执行时间</th>
+                                <th>公司名称</th>
+                                <th>公司地址</th>
+                                <th>联系电话</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr v-for="planVO,i in pageInfo.list">
+                                <td v-if="planVO.plan.type==1">周计划</td>
+                                <td v-if="planVO.plan.type==2">月计划</td>
+                                <td v-if="planVO.plan.type==3">季度计划</td>
+                                <td v-if="planVO.plan.type==4">年计划</td>
+                                <td v-text="planVO.plan.execTime"></td>
+                                <td v-text="planVO.plan.companyName"></td>
+                                <td v-text="planVO.plan.address"></td>
+                                <td v-text="planVO.plan.phone"></td>
+                            </tr>
+                            <tr v-if="pageInfo.total == 0">
+                                <td colspan="5" style="text-align: center">暂无计划！</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="layui-card-body" v-if="pageInfo.total != 0">
+                        <div class="page">
+                            <div>
+                                <a class="prev" href="javascript:void(0)">
+                                    首页
+                                </a>
+                                <a @click="getPage(pageInfo.prePage)" class="prev" href="javascript:void(0)"
+                                   v-if="pageInfo.hasPreviousPage">
+                                    上一页
+                                </a>
+                                <span @click="getPage(pageInfo.pageNum)" class="current">{{pageInfo.pageNum}} / {{pageInfo.pages}}</span>
+                                <a @click="getPage(pageInfo.nextPage)" class="next" href="javascript:void(0)"
+                                   v-if="pageInfo.hasNextPage">
+                                    下一页
+                                </a>
+                                <a @click="getPage(pageInfo.lastPage)" class="prev" href="javascript:void(0)"
+                                   v-if="!pageInfo.isLastPage">
+                                    末页
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -123,5 +126,38 @@
         }
     });
 
+</script>
+<script>
+    function dayin() {
+        var userAgent = navigator.userAgent.toLowerCase();
+        if (userAgent.indexOf("trident") > -1) {
+            alert("请使用google或者360浏览器打印");
+            return false;
+        } else if (userAgent.indexOf('msie') > -1) {
+            var onlyChoseAlert = simpleAlert({
+                "content": "请使用Google或者360浏览器打印",
+                "buttons": {
+                    "确定": function () {
+                        onlyChoseAlert.close();
+                    }
+                }
+            });
+            alert("请使用google或者360浏览器打印");
+            return false;
+        } else {//其它浏览器使用lodop
+            var oldstr = document.body.innerHTML;
+            var headstr = "<html><head><title></title></head><body>";
+            var footstr = "</body>";
+            //执行隐藏打印区域不需要打印的内容
+            // document.getElementById("otherpho").style.display = "none";
+            //此处id换为你自己的id
+            var printData = document.getElementById("wdf").innerHTML; //获得 div 里的所有 html 数据
+            document.body.innerHTML = headstr + printData + footstr;
+            window.print();
+            //打印结束后，放开隐藏内容
+            // document.getElementById("otherpho").style.display = "block";
+            document.body.innerHTML = oldstr;
+        }
+    }
 </script>
 </html>
