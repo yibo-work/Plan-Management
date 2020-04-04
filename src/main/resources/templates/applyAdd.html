@@ -136,12 +136,7 @@
                     } else if (hours < 0) {
                         layer.msg("请选择正确的上课时间！", {icon: 5});
                         boolSubmit = false;
-                    } else if (hours === 0) {//清空不需要弹窗
-                        boolSubmit = false;
-                    } else {
-                        // layer.msg("时间选择成功，上课时间为：" + hours.toFixed(2) + "小时", {icon: 6});
-                        boolSubmit = true;
-                    }
+                    } else boolSubmit = hours !== 0;
 
                     //把存在sessionStorage中的申请的classroomId取出来
                     var classroomId = sessionStorage.getItem("classroomId");
@@ -170,7 +165,7 @@
                             type: "post",
                             success: function (result) {
                                 if (result.code === 200) {
-                                    layer.msg("申请成功", {icon: 6, time: 400},
+                                    layer.msg("申请成功", {icon: 6, time: 1000},
                                         function () {
                                             //关闭当前frame
                                             xadmin.close();

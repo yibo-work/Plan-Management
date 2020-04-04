@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mapper.PlanMapper">
+
+    <!--查询计划-->
+    <select id="queryPlanList" resultType="com.pojo.Plan">
+        select id,
+        company_name,
+        exec_time,
+        phone,
+        address,
+        type,
+        `rank`,
+        status,
+        customer_id
+        from plan
+        <where>
+            <if test="type != null and type != ''">
+                and type = #{type, jdbcType=INTEGER}
+            </if>
+            <if test="companyName != null and companyName != ''">
+                and companyName like concat('%', #{companyName, jdbcType=VARCHAR},'%')
+            </if>
+            <if test="execTime != null and execTime != ''">
+                and exec_time like concat('%', #{execTime, jdbcType=VARCHAR},'%')
+            </if>
+            <if test="status != null and status != ''">
+                and status = #{status, jdbcType=INTEGER}
+            </if>
+        </where>
+        order by `rank`
+    </select>
+
+    <!--新增计划-->
+    <insert id="addPlan">
+        insert into plan(company_name, exec_time, phone, address, type, `rank`, status, customer_id)
+        values (#{plan.companyName,jdbcType=VARCHAR}, #{plan.execTime,jdbcType=VARCHAR},
+                #{plan.phone,jdbcType=VARCHAR}, #{plan.address,jdbcType=VARCHAR}, #{plan.type,jdbcType=INTEGER},
+                #{plan.rank,jdbcType=INTEGER}, #{plan.status,jdbcType=INTEGER}, #{plan.customerId,jdbcType=INTEGER});
+
+        update customer
+        set plan_flag = 1
+        where id = #{plan.customerId,jdbcType=INTEGER};
+    </insert>
+
+    <!--查询单个计划-->
+    <select id="getPlanById" resultType="com.pojo.Plan" useCache="true">
+        Select *
+        from plan
+        where id = #{id};
+    </select>
+
+    <!--修改计划-->
+    <update id="updatePlan">
+        update plan
+        set company_name = #{plan.companyName,jdbcType=VARCHAR},
+            exec_time=#{plan.execTime,jdbcType=VARCHAR},
+            phone=#{plan.phone},
+            address      = #{plan.address},
+            type=#{plan.type},
+            `rank`=#{plan.rank},
+            status=#{plan.status},
+            customer_id=#{plan.customerId}
+        where id = #{plan.id}
+    </update>
+
+    <!--删除计划-->
+    <delete id="removePlanById">
+        delete
+        from plan
+        where id = #{id}
+    </delete>
+
+
+</mapper>

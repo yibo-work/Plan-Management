@@ -69,10 +69,9 @@
      * @param  {[type]}  url   [弹出层地址]
      * @param  {[type]}  w     [宽]
      * @param  {[type]}  h     [高]
-     * @param  {Boolean} full  [全屏]
      * @return {[type]}        [description]
      */
-    Xadmin.prototype.open = function (title, url, w, h, full) {
+    Xadmin.prototype.open = function (title, url, w, h) {
         if (title == null || title == '') {
             var title = false;
         }

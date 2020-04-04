@@ -67,10 +67,93 @@ public class HelloController {
         return "welcome";
     }
 
-    @GetMapping("/classroomList")
-    public String queryAll() {
-        return "classroomList";
+    @GetMapping("/customerManage")
+    public String customerManage() {
+        return "customerManage";
     }
+
+    @GetMapping("/customerUpdate")
+    public String customerUpdate() {
+        return "customerUpdate";
+    }
+
+    @GetMapping("/customerAdd")
+    public String customerAdd() {
+        return "customerAdd";
+    }
+
+    /**
+     * WEEK
+     */
+    @GetMapping("/weekPlanManage")
+    public String weekPlanManage() {
+        return "weekPlanManage";
+    }
+
+    @GetMapping("/weekPlanUpdate")
+    public String weekPlanUpdate() {
+        return "weekPlanUpdate";
+    }
+
+    @GetMapping("/weekPlanAdd")
+    public String weekPlanAdd() {
+        return "weekPlanAdd";
+    }
+
+    /**
+     * MONTH
+     */
+    @GetMapping("/monthPlanManage")
+    public String monthPlanManage() {
+        return "monthPlanManage";
+    }
+
+    @GetMapping("/monthPlanUpdate")
+    public String monthPlanUpdate() {
+        return "monthPlanUpdate";
+    }
+
+    @GetMapping("/monthPlanAdd")
+    public String monthPlanAdd() {
+        return "monthPlanAdd";
+    }
+
+    /**
+     * QUARTER
+     */
+    @GetMapping("/quarterPlanManage")
+    public String quarterPlanManage() {
+        return "quarterPlanManage";
+    }
+
+    @GetMapping("/quarterPlanUpdate")
+    public String quarterPlanUpdate() {
+        return "quarterPlanUpdate";
+    }
+
+    @GetMapping("/quarterPlanAdd")
+    public String quarterPlanAdd() {
+        return "quarterPlanAdd";
+    }
+
+    /**
+     * YEAR
+     */
+    @GetMapping("/yearPlanManage")
+    public String yearPlanManage() {
+        return "yearPlanManage";
+    }
+
+    @GetMapping("/yearPlanUpdate")
+    public String yearPlanUpdate() {
+        return "yearPlanUpdate";
+    }
+
+    @GetMapping("/yearPlanAdd")
+    public String yearPlanAdd() {
+        return "yearPlanAdd";
+    }
+
 
     @GetMapping("/applyAdd")
     public String applyAdd() {
@@ -94,7 +177,7 @@ public class HelloController {
 
     @GetMapping("/classroomAdd")
     public String classroomAdd() {
-        return "classroomAdd";
+        return "customerAdd";
     }
 
     @GetMapping("/classroomUpdate")
@@ -114,7 +197,7 @@ public class HelloController {
 
     @GetMapping("/courseUpdate")
     public String courseUpdate() {
-        return "courseUpdate";
+        return "customerUpdate";
     }
 
     @GetMapping("/auditList")

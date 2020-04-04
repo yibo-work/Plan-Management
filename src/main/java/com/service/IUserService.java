@@ -3,6 +3,7 @@ package com.service;
 import com.pojo.Role;
 import com.pojo.User;
 import com.vo.UserVO;
+import org.springframework.stereotype.Service;
 
 
 public interface IUserService {

@@ -21,3 +21,9 @@ mybatis:
     map-underscore-to-camel-case: true
     #开启二级缓存
     cache-enabled: true
+pagehelper:
+  helper-dialect: mysql
+  params:
+    count: countSql
+  reasonable: false
+  support-methods-arguments: true

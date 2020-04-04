@@ -36,6 +36,12 @@ public class UserController {
 
     }
 
+    @RequestMapping("/loginOut")
+    public void loginOut(HttpSession session) {
+        session.removeAttribute("USER");
+        session.invalidate();
+    }
+
     @RequestMapping("/modifyUser")
     public ResultVO modifyUser(@RequestBody User user) {
         userService.modifyUser(user);
