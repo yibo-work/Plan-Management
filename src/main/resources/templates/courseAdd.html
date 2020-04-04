@@ -46,7 +46,8 @@
                 <div class="layui-input-block">
                     <div class="layui-input-inline layui-show-xs-block">
                         <select id="classroomList" name="classroomId">
-                            <option :value="classroom.id" v-for="classroom,index in classroomList">{{classroom.name}}</option>
+                            <option :value="classroom.id" v-for="classroom,index in classroomList">{{classroom.name}}
+                            </option>
                         </select>
                     </div>
                 </div>
@@ -57,7 +58,8 @@
                 </label>
                 <div class="layui-input-block">
                     <div class="layui-input-inline layui-show-xs-block">
-                        <input autocomplete="off" class="layui-input" id="courseDate" lay-verify="required" name="courseDate" type="text">
+                        <input autocomplete="off" class="layui-input" id="courseDate" lay-verify="required"
+                               name="courseDate" type="text">
                     </div>
                 </div>
             </div>
@@ -192,7 +194,8 @@
             form.on('submit(add)',
                 function (data) {
 
-                    var starts = new Date(nowDate + " " + data.field.beginHour), ends = new Date(nowDate + " " + data.field.endHour);
+                    var starts = new Date(nowDate + " " + data.field.beginHour),
+                        ends = new Date(nowDate + " " + data.field.endHour);
                     var hours = (ends.getTime() - starts.getTime()) / (1000 * 60 * 60);
                     hours = isNaN(hours) ? 0 : hours;
                     if (hours < 0) {

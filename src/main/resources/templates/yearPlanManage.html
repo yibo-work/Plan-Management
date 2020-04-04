@@ -55,12 +55,14 @@
                             <td v-text="yearPlan.phone"></td>
                             <td v-text="yearPlan.address"></td>
                             <td v-if="yearPlan.status==0">未审批</td>
-                            <td v-if="yearPlan.status==1">同意</td>
-                            <td v-if="yearPlan.status==-1">拒绝</td>
+                            <td style='color:green' v-if="yearPlan.status==1">同意</td>
+                            <td style='color:red' v-if="yearPlan.status==-1">拒绝</td>
                             <td class="td-manage">
-                                <button @click="updatePlan(yearPlan.id, yearPlan.customerId)" class="layui-btn layui-btn-warm"
+                                <button @click="updatePlan(yearPlan.id, yearPlan.customerId)"
+                                        class="layui-btn layui-btn-warm"
                                         id="editPlan"
-                                        onclick="xadmin.open('编辑年计划','/yearPlanUpdate',600,450)" v-if="yearPlan.status==-1">
+                                        onclick="xadmin.open('编辑年计划','/yearPlanUpdate',600,450)"
+                                        v-if="yearPlan.status==-1">
                                     <i class="layui-icon">&#xe631;</i>编辑
                                 </button>
                                 <button @click="removePlan(yearPlan.id)" class="layui-btn layui-btn-danger"

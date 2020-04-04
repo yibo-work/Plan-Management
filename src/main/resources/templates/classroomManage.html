@@ -19,7 +19,8 @@
             <span class="layui-breadcrumb">
                 <a target="_top" th:href="@{/index}">首页</a>
             </span>
-    <a class="layui-btn layui-btn-small" onclick="location.reload()" style="line-height:1.6em;margin-top:3px;float:right" title="刷新">
+    <a class="layui-btn layui-btn-small" onclick="location.reload()"
+       style="line-height:1.6em;margin-top:3px;float:right" title="刷新">
         <i class="layui-icon layui-icon-refresh" style="line-height:30px"></i>
     </a>
 </div>
@@ -32,13 +33,16 @@
                         <div class="layui-input-inline layui-show-xs-block">
                             <select name="type">
                                 <option value="">教室类型</option>
-                                <option th:each="classroom,index : ${session.CLASSROOM}" th:value="${classroom.typeId}">[[${classroom.typeName}]]</option>
+                                <option th:each="classroom,index : ${session.CLASSROOM}" th:value="${classroom.typeId}">
+                                    [[${classroom.typeName}]]
+                                </option>
                             </select>
                         </div>
                         <div class="layui-input-inline layui-show-xs-block">
                             <input class="layui-input" name="name" placeholder="请输入教学楼名称" type="text"></div>
                         <div class="layui-input-inline layui-show-xs-block">
-                            <button class="layui-btn" lay-filter="sreach" lay-submit="" onclick="search()" v-on:keyup.enter="search()">
+                            <button class="layui-btn" lay-filter="sreach" lay-submit="" onclick="search()"
+                                    v-on:keyup.enter="search()">
                                 <i class="layui-icon">&#xe615;</i></button>
                         </div>
                     </form>
@@ -65,7 +69,8 @@
                             <td v-if="classroom.type==1">教室</td>
                             <td v-if="classroom.type==2">实验室</td>
                             <td class="td-manage">
-                                <button @click="updateClassroom(classroom.id)" class="layui-btn layui-btn-warm updateClassroom"
+                                <button @click="updateClassroom(classroom.id)"
+                                        class="layui-btn layui-btn-warm updateClassroom"
                                         onclick="xadmin.open('修改教室','/classroomUpdate',500,300)">
                                     <i class="layui-icon">&#xe631;</i>修改
                                 </button>
@@ -84,17 +89,21 @@
                 <div class="layui-card-body" v-if="pageInfo.total != 0">
                     <div class="page">
                         <div>
-                            <a @click="getPageByNum(pageInfo.firstPage)" class="prev" href="javascript:void(0)" v-if="!pageInfo.isFirstPage">
+                            <a @click="getPageByNum(pageInfo.firstPage)" class="prev" href="javascript:void(0)"
+                               v-if="!pageInfo.isFirstPage">
                                 首页
                             </a>
-                            <a @click="getPageByNum(pageInfo.prePage)" class="prev" href="javascript:void(0)" v-if="pageInfo.hasPreviousPage">
+                            <a @click="getPageByNum(pageInfo.prePage)" class="prev" href="javascript:void(0)"
+                               v-if="pageInfo.hasPreviousPage">
                                 上一页
                             </a>
                             <span @click="getPageByNum(pageInfo.pageNum)" class="current">{{pageInfo.pageNum}} / {{pageInfo.pages}}</span>
-                            <a @click="getPageByNum(pageInfo.nextPage)" class="next" href="javascript:void(0)" v-if="pageInfo.hasNextPage">
+                            <a @click="getPageByNum(pageInfo.nextPage)" class="next" href="javascript:void(0)"
+                               v-if="pageInfo.hasNextPage">
                                 下一页
                             </a>
-                            <a @click="getPageByNum(pageInfo.lastPage)" class="prev" href="javascript:void(0)" v-if="!pageInfo.isLastPage">
+                            <a @click="getPageByNum(pageInfo.lastPage)" class="prev" href="javascript:void(0)"
+                               v-if="!pageInfo.isLastPage">
                                 末页
                             </a>
                         </div>

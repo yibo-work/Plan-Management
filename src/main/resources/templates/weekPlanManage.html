@@ -55,12 +55,14 @@
                             <td v-text="weekPlan.phone"></td>
                             <td v-text="weekPlan.address"></td>
                             <td v-if="weekPlan.status==0">未审批</td>
-                            <td v-if="weekPlan.status==1">同意</td>
-                            <td v-if="weekPlan.status==-1">拒绝</td>
+                            <td v-if="weekPlan.status==1" style='color:green'>同意</td>
+                            <td v-if="weekPlan.status==-1" style='color:red'>拒绝</td>
                             <td class="td-manage">
-                                <button @click="updatePlan(weekPlan.id, weekPlan.customerId)" class="layui-btn layui-btn-warm"
+                                <button @click="updatePlan(weekPlan.id, weekPlan.customerId)"
+                                        class="layui-btn layui-btn-warm"
                                         id="editPlan"
-                                        onclick="xadmin.open('编辑周计划','/weekPlanUpdate',600,450)" v-if="weekPlan.status==-1">
+                                        onclick="xadmin.open('编辑周计划','/weekPlanUpdate',600,450)"
+                                        v-if="weekPlan.status==-1">
                                     <i class="layui-icon">&#xe631;</i>编辑
                                 </button>
                                 <button @click="removePlan(weekPlan.id)" class="layui-btn layui-btn-danger"
