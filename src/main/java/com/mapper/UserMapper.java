@@ -22,4 +22,10 @@ public interface UserMapper {
     void updateRole(@Param("role") Role role);
 
     void deleteUserById(@Param("id") Integer id);
+
+    List<User> getUserList();
+
+    List<User> queryUserList();
+
+    User getUserById(@Param("userId") Integer userId);
 }

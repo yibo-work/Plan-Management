@@ -24,8 +24,7 @@
                 <div class="layui-input-block">
                     <div class="layui-input-inline layui-show-xs-block">
                         <select id="customerList" name="customerId">
-                            <option v-for="customer,index in customerList" :value="customer.id">{{customer.man}}
-                            </option>
+                            <option :value="customer.id" v-for="customer,index in customerList">{{customer.man}}</option>
                         </select>
                     </div>
                 </div>
@@ -48,7 +47,7 @@
                 <div class="layui-input-block">
                     <div class="layui-input-inline layui-show-xs-block">
                         <input class="layui-input" id="execTime" lay-verify="required" name="execTime" type="text"
-                               v-model="monthPlan.execTime">
+                               v-model="monthPlan.plan.execTime">
                     </div>
                 </div>
             </div>
@@ -59,7 +58,7 @@
                 <div class="layui-input-block">
                     <div class="layui-input-inline layui-show-xs-block">
                         <input class="layui-input" id="phone" lay-verify="required" name="phone" type="text"
-                               v-model="monthPlan.phone">
+                               v-model="monthPlan.plan.phone">
                     </div>
                 </div>
             </div>
@@ -70,13 +69,7 @@
                 <div class="layui-input-block">
                     <div class="layui-input-inline layui-show-xs-block">
                         <input class="layui-input" id="address" lay-verify="required" name="address" type="text"
-                               v-model="monthPlan.address">
-                        <input class="layui-input" id="type" lay-verify="required" name="type" type="hidden"
-                               v-model="monthPlan.type">
-                        <input class="layui-input" id="status" lay-verify="required" name="status" type="hidden"
-                               v-model="monthPlan.status">
-                        <input class="layui-input" id="rank" lay-verify="required" name="rank" type="hidden"
-                               v-model="monthPlan.rank">
+                               v-model="monthPlan.plan.address">
                     </div>
                 </div>
             </div>
@@ -111,7 +104,7 @@
                 type: "get",
                 success: function (result) {
                     if (result.code === 200) {
-                        _this.monthPlan = result.data;
+                        _this.monthPlan = result.data.plan;
                     } else {
                         layer.alert("获取修改月计划信息失败！");
                     }
@@ -151,9 +144,6 @@
                     monthPlan.execTime = data.field.execTime;
                     monthPlan.phone = data.field.phone;
                     monthPlan.address = data.field.address;
-                    monthPlan.type = data.field.type;
-                    monthPlan.rank = data.field.rank;
-                    monthPlan.status = data.field.status;
 
                     //发异步，把数据提交给controller
                     $.ajax({
@@ -164,7 +154,7 @@
                         type: "put",
                         success: function (result) {
                             if (result.code === 200) {
-                                layer.msg("修改成功", {icon: 6, time: 1000},
+                                layer.msg("修改成功", {icon: 6, time: 500},
                                     function () {
                                         //关闭当前frame
                                         xadmin.close();

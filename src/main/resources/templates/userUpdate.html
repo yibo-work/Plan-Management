@@ -2,7 +2,7 @@
 <html class="x-admin-sm" lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>编辑季度计划</title>
+    <title>修改用户</title>
     <meta content="webkit" name="renderer">
     <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
     <meta content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8" name="viewport"/>
@@ -14,63 +14,40 @@
     <script charset="utf-8" th:src="@{/js/vue.js}" type="text/javascript"></script>
 </head>
 <body>
-<div class="layui-fluid" id="vmUpdateQuarterPlan">
+<div class="layui-fluid" id="vmUpdateUser">
     <div class="layui-row">
         <form class="layui-form">
             <div class="layui-form-item">
-                <label class="layui-form-label" for="customerList">
-                    <span class="x-red">*</span>客户负责人
+                <label class="layui-form-label" for="name">
+                    <span class="x-red">*</span>用户名
                 </label>
                 <div class="layui-input-block">
                     <div class="layui-input-inline layui-show-xs-block">
-                        <select id="customerList" name="customerId">
-                            <option v-for="customer,index in customerList" :value="customer.id">{{customer.man}}
-                            </option>
+                        <input class="layui-input" id="name" lay-verify="required" name="name" type="text"
+                               v-model="user.name">
+                    </div>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label" for="roleList">
+                    <span class="x-red">*</span>角色
+                </label>
+                <div class="layui-input-block">
+                    <div class="layui-input-inline layui-show-xs-block">
+                        <select id="roleList" name="roleId">
+                            <option :value="role.id" v-for="role,index in roleList">{{role.name}}</option>
                         </select>
                     </div>
                 </div>
             </div>
             <div class="layui-form-item">
-                <label class="layui-form-label" for="companyName">
-                    <span class="x-red">*</span>公司名称
-                </label>
-                <div class="layui-input-block">
-                    <div class="layui-input-inline layui-show-xs-block">
-                        <input class="layui-input" id="companyName" lay-verify="required" name="companyName" type="text"
-                               v-model="quarterPlan.companyName">
-                    </div>
-                </div>
-            </div>
-            <div class="layui-form-item">
-                <label class="layui-form-label" for="execTime">
-                    <span class="x-red">*</span>执行时间
-                </label>
-                <div class="layui-input-block">
-                    <div class="layui-input-inline layui-show-xs-block">
-                        <input class="layui-input" id="execTime" lay-verify="required" name="execTime" type="text"
-                               v-model="quarterPlan.execTime">
-                    </div>
-                </div>
-            </div>
-            <div class="layui-form-item">
                 <label class="layui-form-label" for="phone">
-                    <span class="x-red">*</span>电话
+                    <span class="x-red">*</span>联系电话
                 </label>
                 <div class="layui-input-block">
                     <div class="layui-input-inline layui-show-xs-block">
                         <input class="layui-input" id="phone" lay-verify="required" name="phone" type="text"
-                               v-model="quarterPlan.phone">
-                    </div>
-                </div>
-            </div>
-            <div class="layui-form-item">
-                <label class="layui-form-label" for="address">
-                    <span class="x-red">*</span>地址
-                </label>
-                <div class="layui-input-block">
-                    <div class="layui-input-inline layui-show-xs-block">
-                        <input class="layui-input" id="address" lay-verify="required" name="address" type="text"
-                               v-model="quarterPlan.address">
+                               v-model="user.phone">
                     </div>
                 </div>
             </div>
@@ -85,71 +62,69 @@
 </div>
 <script charset="UTF-8" type="text/javascript">
 
-    var updateQuarterPlanId = sessionStorage.getItem("updateQuarterPlanId");
-    var updateQuarterPlanCustomerId = sessionStorage.getItem("updateQuarterPlanCustomerId");
+    var updateUserId = sessionStorage.getItem("updateUserId");
+    var updateUserRoleId = sessionStorage.getItem("updateUserRoleId");
 
     vm = new Vue({
-        el: "#vmUpdateQuarterPlan",
+        el: "#vmUpdateUser",
         data: {
-            quarterPlan: {},
-            customerList: []
+            user: {},
+            roleList: []
         },
+        methods: {},
         created: function () {
             var _this = this;
             $.ajax({
-                url: "/plan/getPlan",
+                url: "/user/getUser",
                 data: {
-                    "planId": updateQuarterPlanId
+                    "userId": updateUserId
                 },
                 dataType: "json",
                 type: "get",
                 success: function (result) {
                     if (result.code === 200) {
-                        _this.quarterPlan = result.data.plan;
+                        _this.user = result.data;
                     } else {
-                        layer.alert("获取修改季度计划信息失败！");
+                        layer.alert("获取修改用户信息失败！");
                     }
                 }
             });
             $.ajax({
-                url: "/customer/getAllCustomer",
+                url: "/role/getRoleList",
                 dataType: "json",
                 type: "get",
                 success: function (result) {
                     if (result.code === 200) {
-                        _this.customerList = result.data;
+                        _this.roleList = result.data;
                     } else {
-                        layer.alert("获取所有客户信息失败！");
+                        layer.alert("获取所有角色信息失败！");
                     }
                 }
             });
 
         }
     });
-    $("[name=customerId]").val(updateQuarterPlanCustomerId);
-    layui.use(['form', 'layer', 'laydate'],
+    $("[name=roleId]").val(updateUserRoleId);
+    layui.use(['form', 'layer'],
         function () {
             var form = layui.form,
-                layer = layui.layer,
-                laydate = layui.laydate;
+                layer = layui.layer;
 
             //监听提交
             form.on('submit(update)',
                 function (data) {
-                    var quarterPlan = {};
+                    var user = {};
 
                     //组装数据
-                    quarterPlan.id = updateQuarterPlanId;
-                    quarterPlan.customerId = data.field.customerId;
-                    quarterPlan.companyName = data.field.companyName;
-                    quarterPlan.execTime = data.field.execTime;
-                    quarterPlan.phone = data.field.phone;
-                    quarterPlan.address = data.field.address;
+                    user.id = updateUserId;
+                    user.name = data.field.name;
+                    user.phone = data.field.phone;
+                    user.roleId = data.field.roleId;
 
                     //发异步，把数据提交给controller
                     $.ajax({
-                        url: "plan/updatePlan",
-                        data: JSON.stringify(quarterPlan),
+                        url: "user/updateUser",
+                        data: JSON.stringify(user),
                         dataType: "json",
                         contentType: "application/json",
                         type: "put",

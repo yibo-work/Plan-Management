@@ -155,59 +155,84 @@ public class HelloController {
     }
 
 
-    @GetMapping("/applyAdd")
-    public String applyAdd() {
-        return "applyAdd";
+    /**
+     * 计划管理
+     */
+    @GetMapping("/planManage")
+    public String planManage() {
+        return "planManage";
     }
 
-    @GetMapping("/applyList")
-    public String applyList() {
-        return "applyList";
+    @GetMapping("/planUpdate")
+    public String planUpdate() {
+        return "planUpdate";
     }
 
-    @GetMapping("/applyHistoryList")
-    public String applyHistoryList() {
-        return "applyHistoryList";
+    @GetMapping("/planUpdateRank")
+    public String planUpdateRank() {
+        return "planUpdateRank";
     }
 
-    @GetMapping("/classroomManage")
-    public String classroomManage() {
-        return "classroomManage";
+    /**
+     * 计划审批
+     */
+    @GetMapping("/planApproval")
+    public String planApproval() {
+        return "planApproval";
     }
 
-    @GetMapping("/classroomAdd")
-    public String classroomAdd() {
-        return "customerAdd";
+    /**
+     * 执行计划记录
+     */
+    @GetMapping("/planPrint")
+    public String planPrint() {
+        return "planPrint";
     }
 
-    @GetMapping("/classroomUpdate")
-    public String classroomUpdate() {
-        return "classroomUpdate";
+    /**
+     * 已执行计划查询
+     */
+    @GetMapping("/planQuery")
+    public String planQuery() {
+        return "planQuery";
     }
 
-    @GetMapping("/courseManage")
-    public String courseManage() {
-        return "courseManage";
+    /**
+     * 无计划客户查询
+     */
+    @GetMapping("/customerNoPlan")
+    public String customerNoPlan() {
+        return "customerNoPlan";
     }
 
-    @GetMapping("/courseAdd")
-    public String courseAdd() {
-        return "courseAdd";
+    /**
+     * 用户管理
+     */
+    @GetMapping("/userManage")
+    public String userManage() {
+        return "userManage";
     }
 
-    @GetMapping("/courseUpdate")
-    public String courseUpdate() {
-        return "customerUpdate";
+    @GetMapping("/userAdd")
+    public String userAdd() {
+        return "userAdd";
     }
 
-    @GetMapping("/auditList")
-    public String auditList() {
-        return "auditList";
+    @GetMapping("/userUpdate")
+    public String userUpdate() {
+        return "userUpdate";
     }
 
-    @GetMapping("/classroomTimeList")
-    public String classroomTimeList() {
-        return "classroomTimeList";
+    /**
+     * 角色管理
+     */
+    @GetMapping("/roleManage")
+    public String roleManage() {
+        return "roleManage";
     }
 
+    @GetMapping("/roleUpdate")
+    public String roleUpdate() {
+        return "roleUpdate";
+    }
 }

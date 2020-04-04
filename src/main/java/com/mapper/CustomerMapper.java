@@ -11,7 +11,7 @@ import java.util.List;
 @Repository
 public interface CustomerMapper {
 
-    List<Customer> queryCustomerList();
+    List<Customer> queryCustomerList(Integer planFlag);
 
     int addCustomer(@Param("customer") Customer customer);
 

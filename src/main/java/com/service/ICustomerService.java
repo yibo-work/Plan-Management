@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface ICustomerService {
 
-    PageInfo<Customer> queryCustomerList(Integer pageNum, Integer pageSize);
+    PageInfo<Customer> queryCustomerList(Integer pageNum, Integer pageSize, Integer planFlag);
 
     int addCustomer(Customer classroom);
 

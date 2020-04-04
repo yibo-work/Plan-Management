@@ -8,17 +8,27 @@
     <!--添加用户-->
     <insert id="addUser">
         insert into user(name, password, phone, role_id)
-            value (#{user.name,jdbcType=VARCHAR},
-                   #{user.password,jdbcType=VARCHAR},
-                   #{user.phone,jdbcType=VARCHAR},
-                   #{user.roleId,jdbcType=INTEGER});
+        value (#{user.name,jdbcType=VARCHAR},
+        <!--这个就是默认的密码：123-->
+        '123',
+        #{user.phone,jdbcType=VARCHAR},
+        #{user.roleId,jdbcType=INTEGER});
     </insert>
 
-    <!--修改权限-->
+    <!--修改用户-->
     <update id="modifyUser">
         update user
-        set role_id = #{user.roleId,jdbcType=INTEGER}
-        where id = #{user.id,jdbcType=INTEGER}
+        <trim prefix="set" suffixOverrides="," suffix=" where id = #{user.id}">
+            <if test="user.name != null and user.name !=''">
+                name = #{user.name,jdbcType=VARCHAR},
+            </if>
+            <if test="user.phone != null and user.phone !=''">
+                phone=#{user.phone},
+            </if>
+            <if test="user.roleId != null and user.roleId !=''">
+                role_id=#{user.roleId},
+            </if>
+        </trim>
     </update>
 
     <!--角色管理-->
@@ -33,7 +43,7 @@
         where id = #{id,jdbcType=INTEGER}
     </delete>
 
-    <!--查询所有applyVOMap-->
+    <!--查询所有userVOMap-->
     <resultMap id="UserVOMap" type="com.vo.UserVO">
         <association property="user" javaType="com.pojo.User">
             <id column="userId" property="id"/>
@@ -56,6 +66,22 @@
                  inner join `role` s ON a.role_id = s.id
         where a.name = #{user.name}
           and password = #{user.password}
+    </select>
+
+    <select id="getUserList" resultType="com.pojo.User">
+        SELECT *
+        from user
+        where role_id = 1
+    </select>
+
+    <select id="queryUserList" resultType="com.pojo.User">
+        SELECT *
+        from user
+    </select>
+    <select id="getUserById" resultType="com.pojo.User">
+        select *
+        from user
+        where id = #{userId,jdbcType=INTEGER};
     </select>
 
 

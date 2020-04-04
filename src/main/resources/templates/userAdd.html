@@ -2,7 +2,7 @@
 <html class="x-admin-sm" lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>修改教室</title>
+    <title>添加用户</title>
     <meta content="webkit" name="renderer">
     <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
     <meta content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8" name="viewport"/>
@@ -14,58 +14,51 @@
     <script charset="utf-8" th:src="@{/js/vue.js}" type="text/javascript"></script>
 </head>
 <body>
-<div class="layui-fluid">
+<div class="layui-fluid" id="vmAddUser">
     <div class="layui-row">
         <form class="layui-form">
             <div class="layui-form-item">
-                <label class="layui-form-label" for="classroomName">
-                    <span class="x-red">*</span>教学楼
+                <label class="layui-form-label" for="name">
+                    <span class="x-red">*</span>用户名
                 </label>
                 <div class="layui-input-block">
                     <div class="layui-input-inline layui-show-xs-block">
-                        <input class="layui-input" id="classroomName" lay-verify="required" name="name" type="text">
-                        <input autocomplete="off" class="layui-input" id="classroomId" name="id" type="hidden">
+                        <input class="layui-input" id="name" lay-verify="required" name="name" type="text">
                     </div>
                 </div>
             </div>
             <div class="layui-form-item">
-                <label class="layui-form-label" for="classType">
-                    <span class="x-red">*</span>教室类型
+                <label class="layui-form-label" for="roleList">
+                    <span class="x-red">*</span>角色
                 </label>
                 <div class="layui-input-block">
                     <div class="layui-input-inline layui-show-xs-block">
-                        <select id="classType" name="type">
-                            <option th:each="classroomType,index : ${session.CLASSROOM}"
-                                    th:value="${classroomType.typeId}">[[${classroomType.typeName}]]
-                            </option>
+                        <select id="roleList" name="roleId">
+                            <option :value="role.id" v-for="role,index in roleList">{{role.name}}</option>
                         </select>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label" for="phone">
+                    <span class="x-red">*</span>联系电话
+                </label>
+                <div class="layui-input-block">
+                    <div class="layui-input-inline layui-show-xs-block">
+                        <input class="layui-input" id="phone" lay-verify="required" name="phone" type="text">
                     </div>
                 </div>
             </div>
             <div class="layui-form-item">
                 <label class="layui-form-label"></label>
                 <button class="layui-btn" lay-filter="add" lay-submit="">
-                    确认修改
+                    确认添加
                 </button>
             </div>
         </form>
     </div>
 </div>
 <script charset="UTF-8" type="text/javascript">
-    var updateClassroomId = sessionStorage.getItem("updateClassroomId");
-    //初始加载要修改的教室
-    $.getJSON("/classroom/getClassroom", {"classroomId": updateClassroomId},
-        function (result) {
-            if (result.code === 200) {
-                var classroom = result.data;
-                $("[name=id]").val(classroom.id);
-                $("[name=name]").val(classroom.name);
-                $("[name=type]").val(classroom.type);
-            } else {
-                layer.alert("获取教室内容信息失败！", {icon: 5});
-            }
-        }
-    );
 
     layui.use(['form', 'layer'],
         function () {
@@ -75,17 +68,16 @@
             //监听提交
             form.on('submit(add)',
                 function (data) {
-
                     //发异步，把数据提交给java
                     $.ajax({
-                        url: "/classroom/updateClassroom",
+                        url: "/user/addUser",
                         data: JSON.stringify(data.field),
                         dataType: "json",
-                        type: "put",
+                        type: "post",
                         contentType: "application/json",
                         success: function (result) {
                             if (result.code === 200) {
-                                layer.msg("修改成功", {icon: 6, time: 1000},
+                                layer.msg("增加成功", {icon: 6, time: 500},
                                     function () {
                                         //关闭当前frame
                                         xadmin.close();
@@ -102,6 +94,30 @@
                 });
 
         });
+
+    vm = new Vue({
+        el: "#vmAddUser",
+        data: {
+            roleList: []
+        },
+        methods: {},
+        created: function () {
+            var _this = this;
+            $.ajax({
+                url: "/role/getRoleList",
+                dataType: "json",
+                type: "get",
+                success: function (result) {
+                    if (result.code === 200) {
+                        _this.roleList = result.data;
+                    } else {
+                        layer.alert("获取所有角色信息失败！");
+                    }
+                }
+            });
+
+        }
+    });
 </script>
 </body>
 </html>

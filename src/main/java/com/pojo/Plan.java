@@ -20,6 +20,6 @@ public class Plan implements Serializable {
     private Integer rank;
     private Integer status;
     private Integer customerId;
-
+    private Integer userId;
 
 }

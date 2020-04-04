@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html class="x-admin-sm" lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>顺序维护</title>
+    <meta content="webkit" name="renderer">
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8" name="viewport"/>
+    <link rel="stylesheet" th:href="@{/css/xadmin.css}">
+    <link rel="stylesheet" th:href="@{/css/font.css}">
+    <script charset="utf-8" th:src="@{/js/jquery.min.js}" type="text/javascript"></script>
+    <script charset="utf-8" th:src="@{/layui/layui.js}" type="text/javascript"></script>
+    <script charset="utf-8" th:src="@{/js/xadmin.js}" type="text/javascript"></script>
+    <script charset="utf-8" th:src="@{/js/vue.js}" type="text/javascript"></script>
+</head>
+<body>
+<div class="layui-fluid" id="vmUpdatePlanRank">
+    <div class="layui-row">
+        <form class="layui-form">
+            <div class="layui-form-item">
+                <label class="layui-form-label" for="rank">
+                    <span class="x-red">*</span>顺序
+                </label>
+                <div class="layui-input-block">
+                    <div class="layui-input-inline layui-show-xs-block">
+                        <input class="layui-input" id="rank" lay-verify="required" name="rank" type="text"
+                               v-model="plan.rank">
+                    </div>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label"></label>
+                <button class="layui-btn" lay-filter="update" lay-submit="">
+                    确认分配
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+<script charset="UTF-8" type="text/javascript">
+
+    var updatePlanId = sessionStorage.getItem("updatePlanId");
+
+    vm = new Vue({
+        el: "#vmUpdatePlanRank",
+        data: {
+            plan: {},
+            userList: []
+        },
+        created: function () {
+            var _this = this;
+            $.ajax({
+                url: "/plan/getPlan",
+                data: {
+                    "planId": updatePlanId
+                },
+                dataType: "json",
+                type: "get",
+                success: function (result) {
+                    if (result.code === 200) {
+                        _this.plan = result.data.plan;
+                    } else {
+                        layer.alert("获取修改计划信息失败！");
+                    }
+                }
+            });
+
+        }
+    });
+    layui.use(['form', 'layer', 'laydate'],
+        function () {
+            var form = layui.form,
+                layer = layui.layer,
+                laydate = layui.laydate;
+
+            //监听提交
+            form.on('submit(update)',
+                function (data) {
+                    var plan = {};
+
+                    //组装数据
+                    plan.id = updatePlanId;
+                    plan.rank = data.field.rank;
+
+                    //发异步，把数据提交给controller
+                    $.ajax({
+                        url: "plan/updatePlan",
+                        data: JSON.stringify(plan),
+                        dataType: "json",
+                        contentType: "application/json",
+                        type: "put",
+                        success: function (result) {
+                            if (result.code === 200) {
+                                layer.msg("修改顺序成功", {icon: 6, time: 500},
+                                    function () {
+                                        //关闭当前frame
+                                        xadmin.close();
+                                        // 可以对主窗口进行刷新
+                                        top.location.reload();
+                                    });
+                            } else {
+                                layer.alert(result.msg);
+                            }
+                        }
+                    });
+
+                    return false;
+                });
+
+        });
+</script>
+</body>
+</html>

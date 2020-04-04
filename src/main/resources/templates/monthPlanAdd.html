@@ -24,8 +24,7 @@
                 <div class="layui-input-block">
                     <div class="layui-input-inline layui-show-xs-block">
                         <select id="customerList" name="customerId">
-                            <option :value="customer.id" v-for="customer,index in customerList">{{customer.man}}
-                            </option>
+                            <option :value="customer.id" v-for="customer,index in customerList">{{customer.man}}</option>
                         </select>
                     </div>
                 </div>
@@ -104,7 +103,7 @@
                         contentType: "application/json",
                         success: function (result) {
                             if (result.code === 200) {
-                                layer.msg("增加成功", {icon: 6, time: 1000},
+                                layer.msg("增加成功", {icon: 6, time: 500},
                                     function () {
                                         //关闭当前frame
                                         xadmin.close();

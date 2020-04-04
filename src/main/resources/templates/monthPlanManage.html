@@ -49,30 +49,30 @@
                         </thead>
                         <tbody>
                         <tr v-for="monthPlan,i in pageInfo.list">
-                            <td v-text="monthPlan.rank"></td>
-                            <td v-text="monthPlan.companyName"></td>
-                            <td v-text="monthPlan.execTime"></td>
-                            <td v-text="monthPlan.phone"></td>
-                            <td v-text="monthPlan.address"></td>
-                            <td v-if="monthPlan.status==0">未审批</td>
-                            <td v-if="monthPlan.status==1" style='color:green'>同意</td>
-                            <td v-if="monthPlan.status==-1" style='color:red'>拒绝</td>
+                            <td v-text="monthPlan.plan.rank"></td>
+                            <td v-text="monthPlan.plan.companyName"></td>
+                            <td v-text="monthPlan.plan.execTime"></td>
+                            <td v-text="monthPlan.plan.phone"></td>
+                            <td v-text="monthPlan.plan.address"></td>
+                            <td v-if="monthPlan.plan.status==0">未审批</td>
+                            <td v-if="monthPlan.plan.status==1" style='color:green'>同意</td>
+                            <td v-if="monthPlan.plan.status==-1" style='color:red'>拒绝</td>
                             <td class="td-manage">
-                                <button @click="updatePlan(monthPlan.id, monthPlan.customerId)"
+                                <button @click="updatePlan(monthPlan.plan.id, monthPlan.plan.customerId)"
                                         class="layui-btn layui-btn-warm"
                                         id="editPlan"
                                         onclick="xadmin.open('编辑月计划','/monthPlanUpdate',600,450)"
-                                        v-if="monthPlan.status==-1">
+                                        v-if="monthPlan.plan.status==-1">
                                     <i class="layui-icon">&#xe631;</i>编辑
                                 </button>
-                                <button @click="removePlan(monthPlan.id)" class="layui-btn layui-btn-danger"
+                                <button @click="removePlan(monthPlan.plan.id)" class="layui-btn layui-btn-danger"
                                         id="delPlan">
                                     <i class="layui-icon">&#xe640;</i>删除
                                 </button>
                             </td>
                         </tr>
                         <tr v-if="pageInfo.total == 0">
-                            <td colspan="6" style="text-align: center">暂无月计划！</td>
+                            <td colspan="7" style="text-align: center">暂无月计划！</td>
                         </tr>
                         </tbody>
                     </table>
@@ -170,7 +170,7 @@
             }
         },
         created: function () {
-            this.getPage(1, 2);
+            this.getPage(1, 5);
         }
     });
 

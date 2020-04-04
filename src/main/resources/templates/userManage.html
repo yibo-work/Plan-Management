@@ -2,7 +2,7 @@
 <html class="x-admin-sm" lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>撤销申请</title>
+    <title>用户管理</title>
     <meta content="webkit" name="renderer">
     <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
     <meta content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8" name="viewport"/>
@@ -26,48 +26,45 @@
 </div>
 <div class="layui-fluid">
     <div class="layui-row layui-col-space15">
-        <div class="layui-col-md12" id="vmApply">
+        <div class="layui-col-md12" id="vmUser">
             <div class="layui-card">
+
+                <div class="layui-card-header">
+                    <button class="layui-btn" onclick="xadmin.open('增加用户','/userAdd',500,400)">
+                        <i class="layui-icon"></i>增加用户
+                    </button>
+                </div>
                 <div class="layui-card-body">
                     <table class="layui-table layui-form">
                         <thead>
                         <tr>
-                            <th>序号</th>
-                            <th>教学楼</th>
-                            <th>教室类型</th>
-                            <th>开始时间</th>
-                            <th>结束时间</th>
-                            <th>申请人</th>
-                            <th>申请理由</th>
-                            <th>申请状态</th>
+                            <th>用户名</th>
+                            <th>角色</th>
+                            <th>联系电话</th>
                             <th>操作</th>
                         </tr>
                         </thead>
                         <tbody>
-                        <tr v-for="applyVO,i in pageInfo.list">
-                            <td v-text="i+1"></td>
-                            <td v-text="applyVO.classroom.name"></td>
-                            <td v-if="applyVO.classroom.type==1">教室</td>
-                            <td v-if="applyVO.classroom.type==2">实验室</td>
-                            <td v-text="applyVO.apply.beginTime"></td>
-                            <td v-text="applyVO.apply.endTime"></td>
-                            <td v-text="applyVO.user.name"></td>
-                            <td v-text="applyVO.apply.reason"></td>
-                            <td>
-                                <span class="layui-btn layui-btn-warm" v-if="applyVO.apply.status==0">审批中</span>
-                                <span class="layui-btn layui-btn-success" v-if="applyVO.apply.status==1">审批通过</span>
-                                <span class="layui-btn layui-btn-danger" v-if="applyVO.apply.status==2">不通过</span>
-                            </td>
+                        <tr v-for="user,i in pageInfo.list">
+                            <td v-text="user.name"></td>
+                            <td v-if="user.roleId==1">普通员工</td>
+                            <td v-if="user.roleId==2">客服经理</td>
+                            <td v-if="user.roleId==3">客户经理</td>
+                            <td v-if="user.roleId==4">系统管理员</td>
+                            <td v-text="user.phone"></td>
                             <td class="td-manage">
-                                <button @click="cancelApply(applyVO.applyId, applyVO.apply.beginTime)"
-                                        class="layui-btn layui-btn-danger"
-                                        id="cancelApply">
-                                    <i class="layui-icon">&#xe669;</i>撤销申请
+                                <button @click="updateUser(user.id)" class="layui-btn layui-btn-warm"
+                                        id="editUser" onclick="xadmin.open('编辑用户','/userUpdate',600,450)">
+                                    <i class="layui-icon">&#xe631;</i>编辑
+                                </button>
+                                <button @click="removeUser(user.id)" class="layui-btn layui-btn-danger"
+                                        id="delUser">
+                                    <i class="layui-icon">&#xe640;</i>删除
                                 </button>
                             </td>
                         </tr>
                         <tr v-if="pageInfo.total == 0">
-                            <td colspan="9" style="text-align: center">暂无申请记录！</td>
+                            <td colspan="6" style="text-align: center">暂无用户信息！</td>
                         </tr>
                         </tbody>
                     </table>
@@ -75,8 +72,7 @@
                 <div class="layui-card-body" v-if="pageInfo.total != 0">
                     <div class="page">
                         <div>
-                            <a @click="getPage(pageInfo.firstPage)" class="prev" href="javascript:void(0)"
-                               v-if="!pageInfo.isFirstPage">
+                            <a class="prev" href="javascript:void(0)">
                                 首页
                             </a>
                             <a @click="getPage(pageInfo.prePage)" class="prev" href="javascript:void(0)"
@@ -101,62 +97,70 @@
 </div>
 </body>
 <script type="text/javascript">
+
+    layui.use(['form'], function () {
+    });
+
     vm = new Vue({
-        el: "#vmApply",
+        el: "#vmUser",
         data: {
             pageInfo: {}
         },
         methods: {
-            getPage: function (pageNum) {
+            getPage: function (pageNum, pageSize) {
                 var _this = this;
-                var url = "/apply/queryApplyByUser?pageNum=" + pageNum + "&pageSize=" + 2;
+                var url = "/user/page?pageNum=" + pageNum;
+
+                if (!pageSize) {
+                    url += "&pageSize=" + _this.pageInfo.pageSize;
+                } else {
+                    url += "&pageSize=" + pageSize;
+                }
 
                 $.getJSON(url, function (data) {
                     _this.pageInfo = data;
                 });
             },
-            cancelApply: function (applyId, beginTime) {
-                var _this = this;
-                var startTime = new Date(beginTime);
-                var nowTime = new Date();
-
-                var USER_ROLE = sessionStorage.getItem("USER_ROLE");
-                //管理员可以任意撤销
-                if (USER_ROLE > 1 || startTime.getTime() > nowTime.getTime()) {
-                    layer.confirm('确认要撤销申请吗？', {icon: 3}, function () {
+            /**
+             * 删除用户
+             */
+            removeUser: function (id) {
+                layer.confirm('确认要删除吗？',
+                    function () {
+                        //发异步删除数据
                         $.ajax({
-                            url: '/apply/cancelApply',
-                            type: "put",
+                            url: "/user/removeUser",
                             data: {
-                                "applyId": applyId
+                                userId: id
                             },
                             dataType: "json",
+                            type: "delete",
                             success: function (result) {
-
                                 if (result.code === 200) {
-                                    layer.msg("撤销成功！", {icon: 6});
-                                    //刷新
-                                    _this.getPage(1);
+                                    layer.msg('删除成功', {
+                                        icon: 1,
+                                        time: 1000
+                                    });
+                                    setTimeout(function () {
+                                        window.location.reload();
+                                    }, 1000);
                                 } else {
                                     layer.alert(result.msg, {icon: 5});
                                 }
-
                             }
                         });
 
                     });
-
-                } else {
-                    layer.alert("已超过借用时间！");
-                }
-
+            },
+            updateUser: function (updateUserId) {
+                //把要修改的updateUserId存到sessionStorage中
+                sessionStorage.setItem("updateUserId", updateUserId);
             }
         },
         created: function () {
-            this.getPage(1);
+            this.getPage(1, 5);
         }
     });
-
 
 </script>
 </html>

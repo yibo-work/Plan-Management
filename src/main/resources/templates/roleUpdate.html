@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html class="x-admin-sm" lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>修改角色权限</title>
+    <meta content="webkit" name="renderer">
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width,role-scalable=yes, minimum-scale=0.4, initial-scale=0.8" name="viewport"/>
+    <link rel="stylesheet" th:href="@{/css/xadmin.css}">
+    <link rel="stylesheet" th:href="@{/css/font.css}">
+    <script charset="utf-8" th:src="@{/js/jquery.min.js}" type="text/javascript"></script>
+    <script charset="utf-8" th:src="@{/layui/layui.js}" type="text/javascript"></script>
+    <script charset="utf-8" th:src="@{/js/xadmin.js}" type="text/javascript"></script>
+    <script charset="utf-8" th:src="@{/js/vue.js}" type="text/javascript"></script>
+</head>
+<body>
+<div class="layui-fluid" id="vmUpdateRole">
+    <div class="layui-row">
+        <form class="layui-form">
+            <div class="layui-form-item">
+                <label class="layui-form-label" for="name">
+                    <span class="x-red">*</span>角色名
+                </label>
+                <div class="layui-input-block">
+                    <div class="layui-input-inline layui-show-xs-block">
+                        <input class="layui-input" id="name" lay-verify="required" name="name" type="text"
+                               v-model="role.name">
+                    </div>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">
+                    <span class="x-red">*</span>拥有权限
+                </label>
+                <div class="layui-input-block">
+                    <div class="layui-input-inline layui-show-xs-block">
+
+                        <!--                        计划执行,计划查询,计划定制,计划管理,客户信息管理,无计划客户查询,后台管理-->
+                        <div class="layui-input-inline">
+                            <input lay-filter="save" lay-skin="primary" name="auths" title="计划执行"
+                                   type="checkbox"
+                                   value="计划执行"/>
+                            <input lay-filter="save" lay-skin="primary" name="auths" title="计划查询"
+                                   type="checkbox"
+                                   value="计划查询"/>
+                            <input lay-filter="save" lay-skin="primary" name="auths" title="计划定制"
+                                   type="checkbox"
+                                   value="计划定制"/>
+                            <input lay-filter="save" lay-skin="primary" name="auths" title="计划管理"
+                                   type="checkbox" value="计划管理"/>
+                            <input lay-filter="save" lay-skin="primary" name="auths" title="客户信息管理"
+                                   type="checkbox" value="客户信息管理"/>
+                            <input lay-filter="save" lay-skin="primary" name="auths" title="无计划客户查询"
+                                   type="checkbox" value="无计划客户查询"/>
+                            <input lay-filter="save" lay-skin="primary" name="auths" title="后台管理"
+                                   type="checkbox" value="后台管理"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label"></label>
+                <button class="layui-btn" lay-filter="update" lay-submit="">
+                    确认修改
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+<script charset="UTF-8" type="text/javascript">
+
+    var updateRoleId = sessionStorage.getItem("updateRoleId");
+
+    vm = new Vue({
+        el: "#vmUpdateRole",
+        data: {
+            role: {},
+        },
+        methods: {},
+        created: function () {
+            var _this = this;
+            $.ajax({
+                url: "/role/getRole",
+                data: {
+                    "roleId": updateRoleId
+                },
+                dataType: "json",
+                type: "get",
+                success: function (result) {
+                    if (result.code === 200) {
+                        _this.role = result.data;
+
+                        $("[name=auths]").each(function () {
+                            if (_this.role.auths.indexOf($(this).val()) > -1) {
+                                $(this).prop("checked", true);
+                            }
+                        });
+                    } else {
+                        layer.alert("获取修改角色信息失败！");
+                    }
+                }
+            });
+
+        }
+    });
+
+    layui.use(['form', 'layer'],
+        function () {
+            var form = layui.form,
+                layer = layui.layer;
+
+            //监听提交
+            form.on('submit(update)',
+                function (data) {
+                    var role = {};
+
+                    //组装数据
+                    role.id = updateRoleId;
+                    role.name = data.field.name;
+                    var values = "";
+                    $("[name=auths]").each(function () {
+                        if ($(this).prop("checked")) {
+                            values += $(this).val() + ",";
+                        }
+
+                    });
+
+                    role.auths = values.substring(0, values.length - 1);
+
+                    //发异步，把数据提交给controller
+                    $.ajax({
+                        url: "role/updateRole",
+                        data: JSON.stringify(role),
+                        dataType: "json",
+                        contentType: "application/json",
+                        type: "put",
+                        success: function (result) {
+                            if (result.code === 200) {
+                                layer.msg("修改成功", {icon: 6, time: 500},
+                                    function () {
+                                        //关闭当前frame
+                                        xadmin.close();
+                                        // 可以对主窗口进行刷新
+                                        top.location.reload();
+                                    });
+                            } else {
+                                layer.alert(result.msg);
+                            }
+                        }
+                    });
+
+                    return false;
+                });
+
+        });
+</script>
+</body>
+</html>

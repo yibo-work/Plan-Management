@@ -18,9 +18,9 @@ public class CustomerServiceImpl implements ICustomerService {
 
 
     @Override
-    public PageInfo<Customer> queryCustomerList(Integer pageNum, Integer pageSize) {
+    public PageInfo<Customer> queryCustomerList(Integer pageNum, Integer pageSize,Integer planFlag) {
         PageHelper.startPage(pageNum, pageSize);
-        return new PageInfo<>(customerMapper.queryCustomerList());
+        return new PageInfo<>(customerMapper.queryCustomerList(planFlag));
     }
 
     @Override
@@ -30,7 +30,7 @@ public class CustomerServiceImpl implements ICustomerService {
 
     @Override
     public List<Customer> getAllCustomer() {
-        return customerMapper.queryCustomerList();
+        return customerMapper.queryCustomerList(null);
     }
 
     @Override

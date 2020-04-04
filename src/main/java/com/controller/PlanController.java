@@ -4,6 +4,7 @@ import com.github.pagehelper.PageInfo;
 import com.pojo.Plan;
 import com.service.IPlanService;
 import com.utils.ResultVOUtil;
+import com.vo.PlanVO;
 import com.vo.ResultVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +17,7 @@ public class PlanController {
     private IPlanService planService;
 
     @GetMapping("/page")
-    public PageInfo<Plan> queryAllPlan(@RequestParam("pageNum") Integer pageNum
+    public PageInfo<PlanVO> queryAllPlan(@RequestParam("pageNum") Integer pageNum
             , @RequestParam("pageSize") Integer pageSize
             , @RequestParam(required = false, name = "status") Integer status
             , @RequestParam(required = false, name = "type") Integer type
@@ -41,7 +42,7 @@ public class PlanController {
 
     @GetMapping("/getPlan")
     public ResultVO getPlan(@RequestParam(value = "planId") Integer planId) {
-        Plan plan = planService.getPlanById(planId);
+        PlanVO plan = planService.getPlanById(planId);
         return ResultVOUtil.success(plan);
     }
 

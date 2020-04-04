@@ -16,8 +16,8 @@ public class CustomerController {
     private ICustomerService customerService;
 
     @GetMapping("/page")
-    public PageInfo<Customer> queryAllCustomer(@RequestParam("pageNum") Integer pageNum, @RequestParam("pageSize") Integer pageSize) {
-        return customerService.queryCustomerList(pageNum, pageSize);
+    public PageInfo<Customer> queryAllCustomer(@RequestParam("pageNum") Integer pageNum, @RequestParam("pageSize") Integer pageSize  , @RequestParam(required = false, name = "planFlag") Integer planFlag) {
+        return customerService.queryCustomerList(pageNum, pageSize, planFlag);
     }
 
     @DeleteMapping("/removeCustomer")
