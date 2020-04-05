@@ -53,7 +53,7 @@
                             <td v-if="user.roleId==4">系统管理员</td>
                             <td v-text="user.phone"></td>
                             <td class="td-manage">
-                                <button @click="updateUser(user.id)" class="layui-btn layui-btn-warm"
+                                <button @click="updateUser(user.id, user.roleId)" class="layui-btn layui-btn-warm"
                                         id="editUser" onclick="xadmin.open('编辑用户','/userUpdate',600,450)">
                                     <i class="layui-icon">&#xe631;</i>编辑
                                 </button>
@@ -152,9 +152,10 @@
 
                     });
             },
-            updateUser: function (updateUserId) {
+            updateUser: function (updateUserId, updateUserRoleId) {
                 //把要修改的updateUserId存到sessionStorage中
                 sessionStorage.setItem("updateUserId", updateUserId);
+                sessionStorage.setItem("updateUserRoleId", updateUserRoleId);
             }
         },
         created: function () {

@@ -69,7 +69,8 @@
         el: "#vmUpdateUser",
         data: {
             user: {},
-            roleList: []
+            roleList: [],
+            updateUserRoleId: updateUserRoleId
         },
         methods: {},
         created: function () {
@@ -104,11 +105,15 @@
 
         }
     });
-    $("[name=roleId]").val(updateUserRoleId);
+
     layui.use(['form', 'layer'],
         function () {
             var form = layui.form,
                 layer = layui.layer;
+
+
+            $("[name=roleId]").val(updateUserRoleId);
+            layui.form.render('select');
 
             //监听提交
             form.on('submit(update)',

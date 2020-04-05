@@ -116,13 +116,14 @@
 
         }
     });
-    $("[name=customerId]").val(updateMonthPlanCustomerId);
     layui.use(['form', 'layer', 'laydate'],
         function () {
             var form = layui.form,
                 layer = layui.layer,
                 laydate = layui.laydate;
 
+    $("[name=customerId]").val(updateMonthPlanCustomerId);
+    layui.form.render('select');
             //监听提交
             form.on('submit(update)',
                 function (data) {
