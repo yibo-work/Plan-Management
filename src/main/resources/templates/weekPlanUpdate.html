@@ -19,25 +19,15 @@
         <form class="layui-form">
             <div class="layui-form-item">
                 <label class="layui-form-label" for="customerList">
-                    <span class="x-red">*</span>客户负责人
+                    <span class="x-red">*</span>客户公司
                 </label>
                 <div class="layui-input-block">
                     <div class="layui-input-inline layui-show-xs-block">
-                        <select id="customerList" name="customerId">
-                            <option v-for="customer,index in customerList" :value="customer.id">{{customer.man}}
-                            </option>
+                        <select id="customerList" name="customerId" lay-filter='selectCustomer'>
+                            <option v-for="customer,index in customerList" :value="customer.id">{{customer.companyName}}</option>
                         </select>
-                    </div>
-                </div>
-            </div>
-            <div class="layui-form-item">
-                <label class="layui-form-label" for="companyName">
-                    <span class="x-red">*</span>公司名称
-                </label>
-                <div class="layui-input-block">
-                    <div class="layui-input-inline layui-show-xs-block">
-                        <input class="layui-input" id="companyName" lay-verify="required" name="companyName" type="text"
-                               v-model="weekPlan.companyName">
+                        <input class="layui-input" id="companyName"  name="companyName" type="hidden"
+                               :value="weekPlan.plan.companyName">
                     </div>
                 </div>
             </div>
@@ -48,7 +38,7 @@
                 <div class="layui-input-block">
                     <div class="layui-input-inline layui-show-xs-block">
                         <input class="layui-input" id="execTime" lay-verify="required" name="execTime" type="text"
-                               v-model="weekPlan.execTime">
+                               :value="weekPlan.plan.execTime">
                     </div>
                 </div>
             </div>
@@ -59,7 +49,7 @@
                 <div class="layui-input-block">
                     <div class="layui-input-inline layui-show-xs-block">
                         <input class="layui-input" id="phone" lay-verify="required" name="phone" type="text"
-                               v-model="weekPlan.phone">
+                               :value="weekPlan.plan.phone">
                     </div>
                 </div>
             </div>
@@ -70,7 +60,7 @@
                 <div class="layui-input-block">
                     <div class="layui-input-inline layui-show-xs-block">
                         <input class="layui-input" id="address" lay-verify="required" name="address" type="text"
-                               v-model="weekPlan.address">
+                               :value="weekPlan.plan.address">
                     </div>
                 </div>
             </div>
@@ -105,7 +95,7 @@
                 type: "get",
                 success: function (result) {
                     if (result.code === 200) {
-                        _this.weekPlan = result.data.plan;
+                        _this.weekPlan = result.data;
                     } else {
                         layer.alert("获取修改周计划信息失败！");
                     }
@@ -170,7 +160,29 @@
 
                     return false;
                 });
+            form.on('select(selectCustomer)', function (data) {
+                var customerId = data.value;
 
+                $.ajax({
+                    url: "/customer/getCustomer",
+                    data: {
+                        "customerId": customerId
+                    },
+                    dataType: "json",
+                    type: "get",
+                    success: function (result) {
+                        if (result.code === 200) {
+                            var customer = result.data;
+                             //赋值
+                            $("[name=phone]").val(customer.phone);
+                            $("[name=address]").val(customer.address);
+                            $("[name=companyName]").val(customer.companyName);
+                        } else {
+                            layer.alert("获取修改客户信息失败！");
+                        }
+                    }
+                });
+            })
         });
 </script>
 </body>
