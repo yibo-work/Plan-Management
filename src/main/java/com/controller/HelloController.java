@@ -1,11 +1,7 @@
 package com.controller;
 
-import com.enums.PlanTypeEnum;
-import com.pojo.Role;
 import com.pojo.User;
-import com.vo.UserVO;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import javax.servlet.http.HttpSession;
@@ -30,36 +26,13 @@ public class HelloController {
     }
 
     @GetMapping("/index")
-    public String index(HttpSession session, Model model) {
+    public String index(HttpSession session) {
         //默认，不用登录
-        UserVO user2 = new UserVO();
         User user = new User();
-        user.setId(3);
         user.setName("chen");
         user.setPassword("123qwe");
-        user.setRoleId(4);
-
-        user2.setUser(user);
-        Role role = new Role();
-        role.setId(1);
-        role.setName("管理员");
-        role.setAuths("计划执行,计划查询,计划定制,计划管理,客户信息管理,无计划客户查询,后台管理");
-
-        user2.setRole(role);
-
-        session.setAttribute("PLAN_TYPE", PlanTypeEnum.values());
-        // 测试时取消前三行，加上后三行注释
-
-        /*session.setAttribute("USER", user2);
-        model.addAttribute("auths", user2.getRole().getAuths());
-        return "index";*/
-
-
-        UserVO userVo = (UserVO) session.getAttribute("USER");
-        model.addAttribute("auths", userVo.getRole().getAuths());
+        session.setAttribute("USER", user);
         return "index";
-
-
     }
 
     @GetMapping("/welcome")
@@ -67,19 +40,19 @@ public class HelloController {
         return "welcome";
     }
 
-    @GetMapping("/customerManage")
-    public String customerManage() {
-        return "customerManage";
+    @GetMapping("/propManage")
+    public String propManage() {
+        return "propManage";
     }
 
     @GetMapping("/customerUpdate")
     public String customerUpdate() {
-        return "customerUpdate";
+        return "propUpdate";
     }
 
     @GetMapping("/customerAdd")
     public String customerAdd() {
-        return "customerAdd";
+        return "propAdd";
     }
 
     /**
@@ -156,7 +129,7 @@ public class HelloController {
 
 
     /**
-     * 计划管理
+     * 属性管理
      */
     @GetMapping("/planManage")
     public String planManage() {

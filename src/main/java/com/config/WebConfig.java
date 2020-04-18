@@ -16,7 +16,7 @@ import java.util.List;
 @Configuration
 @ServletComponentScan
 public class WebConfig implements WebMvcConfigurer {
-    
+
     @Bean
     public HttpMessageConverters httpMessageConverters() {
         FastJsonHttpMessageConverter fjhmc = new FastJsonHttpMessageConverter();
@@ -26,10 +26,10 @@ public class WebConfig implements WebMvcConfigurer {
         fjhmc.setFeatures(SerializerFeature.WriteEnumUsingToString, SerializerFeature.WriteMapNullValue,
                 SerializerFeature.QuoteFieldNames, SerializerFeature.PrettyFormat,
                 SerializerFeature.WriteDateUseDateFormat, SerializerFeature.WriteNullNumberAsZero,
-                SerializerFeature.WriteNullStringAsEmpty, SerializerFeature.DisableCircularReferenceDetect);
+                SerializerFeature.DisableCircularReferenceDetect);
         return new HttpMessageConverters(fjhmc);
     }
-    
+
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         // 设置允许跨域的路径

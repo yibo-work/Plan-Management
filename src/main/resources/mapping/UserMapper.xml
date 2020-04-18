@@ -43,8 +43,8 @@
         where id = #{id,jdbcType=INTEGER}
     </delete>
 
-    <!--查询所有userVOMap-->
-    <resultMap id="UserVOMap" type="com.vo.UserVO">
+    <!--查询所有UserMap-->
+    <resultMap id="UserMap" type="com.vo.User">
         <association property="user" javaType="com.pojo.User">
             <id column="userId" property="id"/>
             <result property="name" column="username"/>
@@ -60,7 +60,7 @@
     </resultMap>
 
     <!--登录-->
-    <select id="login" resultMap="UserVOMap">
+    <select id="login" resultMap="UserMap">
         Select *, a.name as username, s.name as roleName, a.id as userId, s.id as roleId
         from user as a
                  inner join `role` s ON a.role_id = s.id
